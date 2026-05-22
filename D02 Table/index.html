@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architect's Table · Valon Aliti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--w:#fff;--mid:rgba(255,255,255,.6);--muted:rgba(255,255,255,.35);--line:rgba(255,255,255,.08);--serif:'Cormorant Garamond',serif;--mono:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--w);font-family:var(--serif);min-height:100vh;}
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 4rem;background:rgba(8,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.nav-back{font-family:var(--mono);font-size:.55rem;letter-spacing:.2em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.nav-back:hover{color:#fff;}
+.nav-logo{font-family:var(--serif);font-size:.95rem;font-weight:300;font-style:italic;color:#fff;text-decoration:none;}
+#hero{position:relative;height:70vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 8vw 8vh;overflow:hidden;background:linear-gradient(160deg,#141414,#080808);}
+.hero-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.12;}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.96) 0%,rgba(8,8,8,.2) 60%,rgba(8,8,8,.4) 100%);}
+.hc{position:relative;z-index:2;}
+.hlbl{font-family:var(--mono);font-size:.54rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem;animation:up .9s .2s both;}
+.htitle{font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:.9;color:#fff;animation:up .9s .35s both;}
+.htitle em{font-style:italic;color:var(--mid);}
+.hmeta{display:flex;flex-wrap:wrap;gap:2rem;margin-top:2rem;animation:up .9s .5s both;}
+.hm-lbl{font-family:var(--mono);font-size:.48rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:.22rem;}
+.hm-val{font-size:.85rem;font-weight:300;color:rgba(255,255,255,.78);}
+.wrap{max-width:1280px;margin:0 auto;padding:0 8vw 8vw;}
+.sec-lbl{font-family:var(--mono);font-size:.52rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;}
+.sec-lbl::after{content:'';flex:0 0 40px;height:1px;background:var(--line);}
+.intro{padding:7vw 0 5vw;border-bottom:1px solid var(--line);}
+.intro-sum{font-size:clamp(1.2rem,2.2vw,1.75rem);font-weight:300;line-height:1.45;color:rgba(255,255,255,.85);}
+.intro-sum em{font-style:italic;color:var(--mid);}
+.gallery{padding:6vw 0;border-bottom:1px solid var(--line);}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:3rem;}
+.gi{aspect-ratio:4/3;overflow:hidden;background:#111;cursor:pointer;position:relative;}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.gi:hover img{transform:scale(1.04);}
+.gi-lbl{position:absolute;bottom:0;left:0;right:0;padding:.5rem .7rem;background:linear-gradient(to top,rgba(8,8,8,.88),transparent);font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;color:rgba(255,255,255,.4);text-transform:uppercase;}
+.coming-soon{padding:8vw 0;text-align:center;}
+.cs-icon{font-size:2rem;opacity:.2;margin-bottom:1.5rem;}
+.cs-title{font-size:1.5rem;font-weight:300;color:rgba(255,255,255,.35);margin-bottom:.8rem;}
+.cs-sub{font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;color:rgba(255,255,255,.18);text-transform:uppercase;}
+#lightbox{position:fixed;inset:0;z-index:9999;background:rgba(5,5,5,.97);display:none;align-items:center;justify-content:center;overflow:hidden;touch-action:none;}
+#lightbox.open{display:flex;}
+#lb-img{max-width:94vw;max-height:88vh;object-fit:contain;display:block;user-select:none;touch-action:none;}
+#lb-close{position:absolute;top:1rem;right:1.5rem;z-index:2;font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;color:rgba(255,255,255,.4);background:none;border:none;cursor:pointer;text-transform:uppercase;padding:.5rem;}
+#lb-close:hover{color:#fff;}
+#lb-counter{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;color:rgba(255,255,255,.25);white-space:nowrap;pointer-events:none;}
+.proj-nav{padding:5vw 0;display:flex;justify-content:space-between;align-items:center;}
+.pn-link{display:flex;flex-direction:column;gap:.4rem;text-decoration:none;color:#fff;transition:opacity .25s;}
+.pn-link:hover{opacity:.6;}
+.pn-lbl{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+.pn-title{font-size:1rem;font-weight:300;}
+footer{padding:1.5rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.fc{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;}
+.fl a{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.28);text-decoration:none;text-transform:uppercase;margin-left:1.5rem;transition:color .2s;}
+.fl a:hover{color:#fff;}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.rev{animation:up .8s cubic-bezier(.16,1,.3,1) both;}
+@media(max-width:700px){#nav{padding:1.1rem 1.5rem;}.gallery-grid{grid-template-columns:1fr 1fr;}footer{padding:1.2rem 1.5rem;}}
+</style>
+</head>
+<body>
+
+<div id="lightbox">
+  <button id="lb-close" onclick="lbClose()">✕ Close</button>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-counter"></div>
+</div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-back">← Back</a>
+  <a href="../index.html" class="nav-logo">V.A.</a>
+</nav>
+
+<section id="hero">
+  <svg class="hero-svg" viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect x="200" y="200" width="500" height="20" fill="none" stroke="#fff" stroke-width=".6"/>
+    <line x1="250" y1="220" x2="250" y2="460" stroke="#fff" stroke-width=".6"/>
+    <line x1="400" y1="220" x2="400" y2="460" stroke="#fff" stroke-width=".6"/>
+    <line x1="550" y1="220" x2="550" y2="460" stroke="#fff" stroke-width=".6"/>
+    <rect x="200" y="460" width="500" height="20" fill="none" stroke="#fff" stroke-width=".6"/>
+    <line x1="100" y1="480" x2="800" y2="480" stroke="#fff" stroke-width=".3"/>
+    <rect x="900" y="180" width="300" height="300" fill="none" stroke="#fff" stroke-width=".5"/>
+    <line x1="900" y1="330" x2="1200" y2="330" stroke="#fff" stroke-width=".3" opacity=".5"/>
+    <line x1="1050" y1="180" x2="1050" y2="480" stroke="#fff" stroke-width=".3" opacity=".5"/>
+  </svg>
+  <div class="hero-ov"></div>
+  <div class="hc">
+    <p class="hlbl">D02 · Design / Studies · 2011</p>
+    <h1 class="htitle">Architect's<br><em>Table</em></h1>
+    <div class="hmeta">
+      <div><div class="hm-lbl">Year</div><div class="hm-val">2011</div></div>
+      <div><div class="hm-lbl">Location</div><div class="hm-val">Tetovo, MK</div></div>
+      <div><div class="hm-lbl">Type</div><div class="hm-val">Design / Studies</div></div>
+      <div><div class="hm-lbl">Status</div><div class="hm-val">Academic Concept</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <div class="intro rev">
+    <div class="sec-lbl">Overview</div>
+    <p class="intro-sum">An academic design study exploring the <em>architect's workspace</em> — form, function and the creative environment of the designer.</p>
+  </div>
+
+  <div class="gallery rev" style="animation-delay:.1s">
+    <div class="sec-lbl">Images</div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+    <div class="coming-soon" id="coming-soon">
+      <div class="cs-icon">⌂</div>
+      <div class="cs-title">Content coming soon</div>
+      <div class="cs-sub">Add image filenames to IMGS array in this file</div>
+    </div>
+  </div>
+
+  <div class="proj-nav rev" style="animation-delay:.2s">
+    <a href="../index.html" class="pn-link">
+      <span class="pn-lbl">← Portfolio</span>
+      <span class="pn-title">All Projects</span>
+    </a>
+    <a href="../index.html#timeline" class="pn-link" style="text-align:right">
+      <span class="pn-lbl">Timeline →</span>
+      <span class="pn-title">Back to Timeline</span>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="fc">© 2025 Valon Aliti · Architect · Düsseldorf</span>
+  <div class="fl">
+    <a href="../index.html">Home</a>
+    <a href="../impressum.html">Impressum</a>
+    <a href="../datenschutz.html">Datenschutz</a>
+  </div>
+</footer>
+
+<script>
+// ── ADD YOUR IMAGE FILENAMES HERE ──
+// Once you upload images to the D02 Table/ folder on GitHub,
+// add them to this array like this:
+// var IMGS = [
+//   {src:'d02-01.jpg', cap:'View 01'},
+//   {src:'d02-02.jpg', cap:'View 02'},
+// ];
+var IMGS = [];
+
+(function(){
+  var grid = document.getElementById('gallery-grid');
+  var cs   = document.getElementById('coming-soon');
+  if(IMGS.length > 0){
+    cs.style.display = 'none';
+    IMGS.forEach(function(img, i){
+      var div = document.createElement('div');
+      div.className = 'gi';
+      div.onclick = function(){ lbOpen(i); };
+      div.innerHTML = '<img src="'+img.src+'" alt="'+(img.cap||'')+'" onerror="this.parentElement.style.display=\'none\'"><div class="gi-lbl">'+(img.cap||'')+'</div>';
+      grid.appendChild(div);
+    });
+  }
+})();
+
+var LI=0;
+function lbOpen(i){LI=i;lbUp();document.getElementById('lightbox').classList.add('open');document.body.style.position='fixed';document.body.style.width='100%';}
+function lbClose(){document.getElementById('lightbox').classList.remove('open');document.body.style.position='';document.body.style.width='';}
+function lbNav(d){LI=(LI+d+IMGS.length)%IMGS.length;lbUp();}
+function lbUp(){if(!IMGS.length)return;var it=IMGS[LI];document.getElementById('lb-img').src=it.src;document.getElementById('lb-counter').textContent=(LI+1)+' / '+IMGS.length+(it.cap?'  —  '+it.cap:'');}
+var _lb=document.getElementById('lightbox'),_sx=0,_sy=0,_st=0;
+_lb.addEventListener('touchstart',function(e){_sx=e.touches[0].clientX;_sy=e.touches[0].clientY;_st=Date.now();e.preventDefault();},{passive:false});
+_lb.addEventListener('touchmove',function(e){e.preventDefault();},{passive:false});
+_lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_sx,dy=e.changedTouches[0].clientY-_sy,dt=Date.now()-_st;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>30&&dt<500)lbNav(dx<0?1:-1);},{passive:false});
+_lb.addEventListener('click',function(e){if(e.target===document.getElementById('lb-close'))return;if(e.clientX<_lb.clientWidth/2)lbNav(-1);else lbNav(1);});
+document.addEventListener('keydown',function(e){if(!_lb.classList.contains('open'))return;if(e.key==='Escape')lbClose();if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1);});
+</script>
+</body>
+</html>

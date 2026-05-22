@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="description" content="Architecture, BIM, visualization and design portfolio by Valon Aliti — Architect and BIM Specialist based in Düsseldorf, Germany.">
+<meta name="author" content="Valon Aliti">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Valon Aliti | Architecture & BIM Portfolio">
+<meta property="og:type" content="website">
+<title>Valon Aliti | Architecture &amp; BIM Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#080808;--bg2:#0f0f0f;--w:#fff;--mid:rgba(255,255,255,.6);--muted:rgba(255,255,255,.35);--line:rgba(255,255,255,.08);--serif:'Cormorant Garamond',serif;--mono:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:var(--serif);overflow-x:hidden;cursor:none;}
+#cr{position:fixed;width:6px;height:6px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#crr{position:fixed;width:24px;height:24px;border:1px solid rgba(255,255,255,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 4rem;background:rgba(8,8,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.n-logo{font-family:var(--serif);font-size:.95rem;font-weight:300;font-style:italic;color:#fff;text-decoration:none;}
+.n-links{display:flex;gap:2rem;list-style:none;}
+.n-links a{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;white-space:nowrap;}
+.n-links a:hover,.n-links a.act{color:#fff;}
+.n-lang{display:flex;gap:.5rem;}
+.lb{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--muted);background:none;border:none;cursor:none;text-transform:uppercase;transition:color .2s;padding:.15rem .3rem;}
+.lb.on,.lb:hover{color:#fff;}
+#hero{position:relative;width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 8vw 10vh;}
+#thr{position:absolute;inset:0;width:100%;height:100%;}
+.hov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.96) 0%,rgba(8,8,8,.25) 55%,rgba(8,8,8,.45) 100%);}
+.hc{position:relative;z-index:2;}
+.hl{font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:1.3rem;animation:up .9s .3s both;}
+.hn{font-size:clamp(4rem,9vw,8rem);font-weight:300;line-height:.88;color:#fff;animation:up .9s .5s both;}
+.hn em{font-style:italic;color:var(--mid);}
+.hs{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;color:var(--mid);margin-top:1.8rem;max-width:380px;line-height:1.8;animation:up .9s .7s both;}
+.hscr{position:absolute;bottom:4.5vh;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:fi .9s 1.4s both;}
+.hscr span{font-family:var(--mono);font-size:.5rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;}
+.hscrl{width:1px;height:42px;background:linear-gradient(to bottom,#fff,transparent);animation:pl 2s infinite;}
+.sec{padding:8vw 8vw;}
+.slbl{font-family:var(--mono);font-size:.54rem;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:1rem;margin-bottom:2.8rem;}
+.slbl::after{content:'';flex:0 0 44px;height:1px;background:var(--line);}
+#about{background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:start;}
+.ah{font-size:clamp(2.2rem,4.5vw,4rem);font-weight:300;line-height:1.02;color:#fff;margin-bottom:1.8rem;}
+.ah em{font-style:italic;color:var(--mid);}
+.ab{font-size:1rem;font-weight:300;line-height:1.82;color:var(--mid);margin-bottom:1.3rem;}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-bottom:2rem;}
+.sk{padding:1rem 1.1rem;border:1px solid var(--line);background:rgba(255,255,255,.015);}
+.skn{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:.45rem;}
+.skb{height:1px;background:rgba(255,255,255,.07);}
+.skf{height:100%;background:rgba(255,255,255,.38);}
+.lrow{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--line);}
+.lname{font-size:.88rem;font-weight:300;}
+.ldots{display:flex;gap:3px;}
+.ld{width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.25);}
+.ld.on{background:rgba(255,255,255,.55);border-color:rgba(255,255,255,.55);}
+.tag{display:inline-block;font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;background:rgba(255,255,255,.05);color:var(--muted);padding:.18rem .5rem;margin-right:.3rem;margin-bottom:.3rem;}
+#timeline{background:var(--bg2);padding:8vw 0;}
+.tl-wrap{display:grid;grid-template-columns:220px 1fr;padding:0 8vw;gap:0;}
+.tl-left{position:sticky;top:80px;height:fit-content;padding-right:3vw;}
+.tl-head{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:#fff;line-height:1.02;margin-bottom:1.4rem;}
+.tl-head em{font-style:italic;color:var(--mid);}
+.cert{font-family:var(--mono);font-size:.5rem;letter-spacing:.13em;color:var(--muted);border:1px solid var(--line);padding:.5rem .8rem;text-transform:uppercase;line-height:1.7;display:inline-block;margin-bottom:1.8rem;}
+.tl-leg{display:flex;flex-direction:column;gap:.6rem;}
+.leg-row{display:flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.13em;color:var(--muted);text-transform:uppercase;}
+.leg-sym{width:13px;height:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sc{width:9px;height:9px;border-radius:50%;background:#fff;}
+.se{width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;}
+.sl{width:8px;height:8px;background:#fff;}
+.si{width:8px;height:8px;border:1.5px solid #fff;}
+.sr{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #fff;}
+.tl-right{position:relative;padding-left:2.8rem;}
+.tl-track{position:absolute;left:0;top:.5rem;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(255,255,255,.28),transparent);}
+.tli{position:relative;padding:1.8rem 0;border-bottom:1px solid rgba(255,255,255,.04);display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:center;}
+.tli.nopreview{grid-template-columns:1fr;}
+.tli:last-child{border-bottom:none;}
+.tli.clickable{cursor:pointer;transition:background .25s;}
+.tli.clickable:hover{background:rgba(255,255,255,.025);}
+.tli.clickable:hover .tli-img-prev{opacity:1 !important;}
+.tli-sym{position:absolute;left:-3rem;top:50%;transform:translateY(-50%);width:14px;height:14px;display:flex;align-items:center;justify-content:center;}
+.tli.career    .tli-sym::after{content:'';width:9px;height:9px;border-radius:50%;background:#fff;display:block;}
+.tli.education .tli-sym::after{content:'';width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;display:block;}
+.tli.landscape .tli-sym::after{content:'';width:8px;height:8px;background:#fff;display:block;}
+.tli.interior  .tli-sym::after{content:'';width:8px;height:8px;border:1.5px solid #fff;display:block;}
+.tli.research  .tli-sym::after{content:'';width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #fff;display:block;}
+.tli-yr{font-family:var(--mono);font-size:.52rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:.4rem;}
+.tli-title{font-size:1.05rem;font-weight:300;color:#fff;margin-bottom:.22rem;line-height:1.15;}
+.tli-sub{font-size:.8rem;font-style:italic;color:var(--muted);margin-bottom:.3rem;}
+.tli-role{font-family:var(--mono);font-size:.5rem;letter-spacing:.09em;color:rgba(255,255,255,.32);text-transform:uppercase;}
+.tli-att{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem;align-items:center;}
+.tli-stat{font-family:var(--mono);font-size:.44rem;letter-spacing:.12em;padding:.12rem .42rem;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);}
+.tli-stat.on{color:#fff;border-color:rgba(255,255,255,.45);}
+.tlilink{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--mono);font-size:.44rem;letter-spacing:.11em;color:rgba(255,255,255,.4);text-decoration:none;text-transform:uppercase;border:1px solid rgba(255,255,255,.1);padding:.12rem .42rem;transition:color .22s,border-color .22s;cursor:pointer;background:none;}
+.tlilink:hover{color:#fff;border-color:rgba(255,255,255,.38);}
+.tliprev{width:300px;height:180px;position:relative;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid var(--line);flex-shrink:0;}
+.tliprev svg{position:absolute;inset:0;width:100%;height:100%;opacity:.15;transition:opacity .4s;}
+.tliprev-lbl{position:absolute;bottom:0;left:0;right:0;padding:.45rem .6rem;background:linear-gradient(to top,rgba(8,8,8,.85),transparent);font-family:var(--mono);font-size:.42rem;letter-spacing:.14em;color:rgba(255,255,255,.4);text-transform:uppercase;z-index:2;}
+.tli-arr{position:absolute;top:.6rem;right:.6rem;font-family:var(--mono);font-size:.42rem;letter-spacing:.12em;color:rgba(255,255,255,.22);opacity:0;transition:opacity .25s;z-index:2;}
+.tli.clickable:hover .tli-arr{opacity:1;}
+.tli.clickable:hover .tliprev svg{opacity:.35;}
+#contact{background:var(--bg);padding:8vw 8vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;}
+.ch{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;color:#fff;line-height:.95;margin-bottom:2.2rem;}
+.ch em{font-style:italic;color:var(--mid);}
+.clink{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 0;border-bottom:1px solid var(--line);text-decoration:none;color:#fff;transition:padding-left .32s;cursor:none;}
+.clink:hover{padding-left:.45rem;}
+.clink-lbl{font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:.22rem;}
+.clink-val{font-size:.92rem;font-weight:300;color:rgba(255,255,255,.88);}
+.carr{font-size:1rem;color:var(--muted);transition:transform .28s;}
+.clink:hover .carr{transform:translateX(5px);}
+.avail{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:var(--muted);line-height:1.9;text-transform:uppercase;}
+.avdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#7fff9a;margin-right:.5rem;animation:glow 2.5s infinite;}
+footer{border-top:1px solid var(--line);}
+.footer-top{padding:2rem 4rem;border-bottom:1px solid var(--line);}
+.footer-disclaimer{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:rgba(255,255,255,.2);line-height:1.8;max-width:900px;}
+.footer-bottom{padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.fc{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;}
+.fl{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.fl a{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.28);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;}
+.fl a:hover{color:#fff;}
+#yt-modal{position:fixed;inset:0;z-index:9999;background:rgba(4,4,4,.97);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;}
+#yt-modal.open{display:flex;}
+#yt-modal iframe{width:min(880px,90vw);height:min(495px,50.6vw);border:none;}
+#yt-close{position:absolute;top:1.5rem;right:2rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;color:var(--muted);background:none;border:none;cursor:none;text-transform:uppercase;}
+#yt-close:hover{color:#fff;}
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes pl{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes glow{0%,100%{box-shadow:0 0 5px rgba(127,255,154,.4)}50%{box-shadow:0 0 12px rgba(127,255,154,.7)}}
+.rev{animation:up .75s cubic-bezier(.16,1,.3,1) both;}
+@media(max-width:900px){
+  #nav{padding:1.1rem 1.5rem;}.n-links{gap:1rem;}
+  #about{grid-template-columns:1fr;}
+  .tl-wrap{grid-template-columns:1fr;padding:0 5vw;}
+  .tl-left{position:static;margin-bottom:2rem;}
+  .tli{grid-template-columns:1fr;}
+  .tliprev{width:100%;height:160px;}
+  #contact{grid-template-columns:1fr;}
+  .footer-top,.footer-bottom{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div id="yt-modal"><button id="yt-close" onclick="ytClose()">✕ Close</button><iframe id="yt-frame" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe><div id="yt-ph" style="font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:rgba(255,255,255,.22);text-align:center;line-height:2;text-transform:uppercase;"></div></div>
+<div id="cr"></div><div id="crr"></div>
+<nav id="nav">
+  <a href="#hero" class="n-logo" onclick="goto('hero');return false;">V.A.</a>
+  <ul class="n-links">
+    <li><a href="#about"    data-i18n="nav_about"    onclick="goto('about');return false;">About</a></li>
+    <li><a href="works.html" data-i18n="nav_works">Works</a></li>
+    <li><a href="#timeline" data-i18n="nav_timeline" onclick="goto('timeline');return false;">Timeline</a></li>
+    <li><a href="#contact"  data-i18n="nav_contact"  onclick="goto('contact');return false;">Contact</a></li>
+  </ul>
+  <div class="n-lang">
+    <button class="lb on" onclick="setLang('en')">EN</button>
+    <button class="lb" onclick="setLang('de')">DE</button>
+    <button class="lb" onclick="setLang('al')">AL</button>
+    <button class="lb" onclick="setLang('mk')">MK</button>
+  </div>
+</nav>
+<section id="hero">
+  <canvas id="thr"></canvas><div class="hov"></div>
+  <div class="hc">
+    <p class="hl" data-i18n="h_lbl">Architect · BIM Specialist · Düsseldorf</p>
+    <h1 class="hn">Valon<br><em>Aliti</em></h1>
+    <p class="hs" data-i18n="h_sub">Designing at the intersection of spatial precision and digital intelligence.</p>
+  </div>
+  <div class="hscr"><span data-i18n="scroll">Scroll</span><div class="hscrl"></div></div>
+</section>
+<section id="about" class="sec rev">
+  <div>
+    <div class="slbl" data-i18n="a_lbl">About</div>
+    <h2 class="ah">Architect &amp;<br><em>BIM Author</em></h2>
+    <p class="ab" data-i18n="a_bio">Based in Düsseldorf, I work at the intersection of architecture, BIM coordination, and sustainable construction. At POS4 Architekten, I lead BIM-integrated planning for public sports facilities and residential buildings — including Germany's first certified sustainable swimming pool.</p>
+    <p class="ab" data-i18n="a_bio2">My work spans design, technical execution, BIM coordination, and digital collaboration — with a commitment to timber construction and climate-conscious building methodologies.</p>
+    <div style="margin-top:1.2rem"><span class="tag">Archicad</span><span class="tag">Solibri</span><span class="tag">Twinmotion</span><span class="tag">IFC/BIMx</span><span class="tag">NOVA AVA</span></div>
+  </div>
+  <div class="rev" style="animation-delay:.1s">
+    <div class="slbl" data-i18n="sk_lbl">Skills &amp; Languages</div>
+    <div class="sgrid">
+      <div class="sk"><div class="skn">Archicad</div><div class="skb"><div class="skf" style="width:100%"></div></div></div>
+      <div class="sk"><div class="skn">Solibri</div><div class="skb"><div class="skf" style="width:75%"></div></div></div>
+      <div class="sk"><div class="skn">Twinmotion</div><div class="skb"><div class="skf" style="width:90%"></div></div></div>
+      <div class="sk"><div class="skn">MS Office</div><div class="skb"><div class="skf" style="width:90%"></div></div></div>
+      <div class="sk"><div class="skn">Photoshop</div><div class="skb"><div class="skf" style="width:40%"></div></div></div>
+      <div class="sk"><div class="skn">BIM / IFC</div><div class="skb"><div class="skf" style="width:95%"></div></div></div>
+    </div>
+    <div class="lrow"><span class="lname" data-i18n="l_de">German</span><div class="ldots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div></div></div>
+    <div class="lrow"><span class="lname" data-i18n="l_al">Albanian</span><div class="ldots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div></div>
+    <div class="lrow"><span class="lname" data-i18n="l_en">English</span><div class="ldots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div></div></div>
+    <div class="lrow"><span class="lname" data-i18n="l_mk">Macedonian</span><div class="ldots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div></div>
+    <div class="lrow"><span class="lname" data-i18n="l_hr">Croatian</span><div class="ldots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div><div class="ld"></div></div></div>
+  </div>
+</section>
+<section id="timeline">
+  <div class="tl-wrap">
+    <div class="tl-left rev">
+      <div class="slbl" data-i18n="tl_lbl">Timeline</div>
+      <h2 class="tl-head">Career &amp;<br><em>Timeline</em></h2>
+      <div class="cert">buildingSMART<br>Certified · 2020<br>ID: de.0601</div>
+      <div class="tl-leg">
+        <div class="leg-row"><div class="leg-sym"><div class="sc"></div></div><span data-i18n="lg_car">Career</span></div>
+        <div class="leg-row"><div class="leg-sym"><div class="se"></div></div><span data-i18n="lg_edu">Education</span></div>
+        <div class="leg-row"><div class="leg-sym"><div class="sl"></div></div><span data-i18n="lg_lan">Landscape</span></div>
+        <div class="leg-row"><div class="leg-sym"><div class="si"></div></div><span data-i18n="lg_int">Interior</span></div>
+        <div class="leg-row"><div class="leg-sym"><div class="sr"></div></div><span data-i18n="lg_res">Research</span></div>
+      </div>
+    </div>
+    <div class="tl-right rev" style="animation-delay:.1s">
+      <div class="tl-track"></div>
+
+      <!-- EVENT: POS4 -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2019 – <span data-i18n="pres">Present</span></div><div class="tli-title" data-i18n="t_p4">Architect · BIM Author · Sub-project Lead</div><div class="tli-sub">POS4 Architekten Generalplaner GmbH</div><div class="tli-role" data-i18n="t_p4r">Düsseldorf, DE · LP 1–5 · BIM · Timber · Sustainability</div><div class="tli-att"><span class="tli-stat on" data-i18n="ongoing">Ongoing</span></div></div></div>
+
+      <!-- PROJECT: Bergisch Gladbach -->
+      <div class="tli career clickable" onclick="window.location='project-bergisch-gladbach.html'"><div class="tli-sym"></div><div><div class="tli-yr">2024 – 2025</div><div class="tli-title" data-i18n="t_bg">New Sport Complex Bergisch Gladbach</div><div class="tli-sub">POS4 Architekten · Bergisch Gladbach-Refrath, DE</div><div class="tli-role" data-i18n="t_bgr">LP 1–5 · BIM · CLT Timber · Sustainability</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><span class="tli-stat" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.4)">🏆 BIM Champions 2025</span><a class="tlilink" href="project-bergisch-gladbach.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a></div></div></div>
+
+      <!-- PROJECT: Hallenbad -->
+      <div class="tli career clickable" onclick="window.location='project-hallenbad.html'"><div class="tli-sym"></div><div><div class="tli-yr">2019 – 2025</div><div class="tli-title" data-i18n="t_hb">Indoor Swimming Pool Leichlingen</div><div class="tli-sub">POS4 Architekten · Leichlingen, DE</div><div class="tli-role" data-i18n="t_hbr">Public swimming pool · BIM · Nachhaltigkeit</div><div class="tli-att"><span class="tli-stat" style="color:#fff;border-color:rgba(255,255,255,.5)" data-i18n="in_use">Completed · In Use</span><a class="tlilink" href="project-hallenbad.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="45" width="270" height="100" fill="none" stroke="#fff" stroke-width=".7"/><rect x="28" y="55" width="50" height="72" fill="none" stroke="#fff" stroke-width=".4"/><line x1="15" y1="45" x2="15" y2="16" stroke="#fff" stroke-width=".5"/><line x1="285" y1="45" x2="285" y2="16" stroke="#fff" stroke-width=".5"/><line x1="15" y1="16" x2="285" y2="16" stroke="#fff" stroke-width=".5"/></svg><div class="tliprev-lbl" data-i18n="t_hb">Indoor Swimming Pool Leichlingen</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- LANDSCAPE: Park Along the River -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2023</div><div class="tli-title" data-i18n="t_park">Park Along the River</div><div class="tli-sub">Kamjan</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><button class="tlilink" onclick="ytOpen('','Park Along the River')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- LANDSCAPE: Waterfall -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2022</div><div class="tli-title" data-i18n="t_wf">Waterfall 6 7 8</div><div class="tli-sub">Kamjan</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><button class="tlilink" onclick="ytOpen('','Waterfall 6 7 8')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- LANDSCAPE: Bio Market -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2021</div><div class="tli-title" data-i18n="t_bio">Bio Market and Park</div><div class="tli-sub">Kamjan</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><button class="tlilink" onclick="ytOpen('','Bio Market and Park')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- EVENT: BIM Cert -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2020</div><div class="tli-title" data-i18n="t_bim">Individual Qualification Basic Module</div><div class="tli-sub">buildingSMART International</div><div class="tli-role" data-i18n="t_bimr">Certification · Germany · ID: de.0601</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><a class="tlilink" href="certificates/bim.pdf" target="_blank">↓ PDF</a></div></div></div>
+
+      <!-- LANDSCAPE: Park Dushku -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2020</div><div class="tli-title" data-i18n="t_dush">Park Dushku</div><div class="tli-sub">Kamjan</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><button class="tlilink" onclick="ytOpen('','Park Dushku')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- CAREER: Watertower -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2020</div><div class="tli-title" data-i18n="t_wt">Watertower Renovation</div><div class="tli-sub">Frechen, DE</div><div class="tli-role" data-i18n="t_wtr">Residential · Renovation</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- EVENT: CGN3 -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2019</div><div class="tli-title" data-i18n="t_cgn3">Architect</div><div class="tli-sub">CGN3 Plan und Bau GbR</div><div class="tli-role" data-i18n="t_cgn3r">Frechen, DE · Single-family homes, Renovation, LP 1–5</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- PROJECT: Master Thesis 2019 -->
+      <div class="tli education clickable" onclick="window.location='project-airport.html'"><div class="tli-sym"></div><div><div class="tli-yr">2019</div><div class="tli-title" data-i18n="t_mas">Master Thesis — Aeronautical &amp; Recreational Center</div><div class="tli-sub">Universität Ss. Kiril und Metodij, Skopje</div><div class="tli-role" data-i18n="t_masr">Grade DE 2,22 / MK 8,88</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><a class="tlilink" href="project-airport.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a><a class="tlilink" href="D08 Master/thesis.pdf" target="_blank" onclick="event.stopPropagation()">↓ PDF</a><button class="tlilink" onclick="event.stopPropagation();ytOpen('','Master Thesis')">▶ <span data-i18n="vid">Video</span></button></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="110" width="280" height="14" fill="none" stroke="#fff" stroke-width=".5"/><polygon points="80,110 110,40 140,110" fill="none" stroke="#fff" stroke-width=".7"/><circle cx="200" cy="80" r="30" fill="none" stroke="#fff" stroke-width=".5"/><rect x="248" y="66" width="42" height="44" fill="none" stroke="#fff" stroke-width=".5"/></svg><div class="tliprev-lbl" data-i18n="t_mas">Master Thesis — Airport</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- INTERIOR: Door Down -->
+      <div class="tli interior nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2017</div><div class="tli-title">Door Down</div><div class="tli-sub">Kamjan, MK</div><div class="tli-role" data-i18n="lg_int">Interior Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- INTERIOR: TetovArt -->
+      <div class="tli interior nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2017</div><div class="tli-title">TetovArt</div><div class="tli-sub">Tetovo, MK</div><div class="tli-role" data-i18n="lg_int">Interior Design</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span></div></div></div>
+
+      <!-- EVENT: Started Master Degree 2016 -->
+      <div class="tli education nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2016</div><div class="tli-title" data-i18n="t_mas_start">Started Master Degree</div><div class="tli-sub">Universität Ss. Kiril und Metodij, Skopje</div><div class="tli-role" data-i18n="t_mas_start_r">Architecture · Skopje, North Macedonia</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- INTERIOR: Golden Ratio -->
+      <div class="tli interior nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2016</div><div class="tli-title">Golden Ratio</div><div class="tli-sub">Pirok</div><div class="tli-role" data-i18n="lg_int">Interior Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- PROJECT: Veles Studio 9 -->
+      <div class="tli education clickable" onclick="window.location='project-veles.html'"><div class="tli-sym"></div><div><div class="tli-yr">2016</div><div class="tli-title" data-i18n="t_vel">Studio 9 — Transportation &amp; Shopping Center, Veles</div><div class="tli-sub">Veles, MK</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><a class="tlilink" href="project-veles.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="20" height="120" fill="none" stroke="#fff" stroke-width=".5"/><rect x="55" y="20" width="20" height="120" fill="none" stroke="#fff" stroke-width=".5"/><rect x="245" y="20" width="20" height="120" fill="none" stroke="#fff" stroke-width=".5"/><rect x="75" y="55" width="170" height="90" fill="none" stroke="#fff" stroke-width=".7"/><path d="M0,165 Q75,150 150,165 Q225,180 300,165" fill="none" stroke="#fff" stroke-width=".8" opacity=".4"/></svg><div class="tliprev-lbl" data-i18n="t_vel">Verkehrsstation Veles</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- LANDSCAPE: Moon Shape -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2015</div><div class="tli-title" data-i18n="t_moon">Moon Shape</div><div class="tli-sub">Cellopek, Tetovo</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- EDUCATION: BUR Studio 8 -->
+      <div class="tli education nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2015</div><div class="tli-title" data-i18n="t_bur">Studio 8 — Berlin University Residence (BUR)</div><div class="tli-sub">Berlin, DE</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span></div></div></div>
+
+      <!-- PROJECT: Winery Studio 7 -->
+      <div class="tli education clickable" onclick="window.location='project-winery.html'"><div class="tli-sym"></div><div><div class="tli-yr">2014</div><div class="tli-title" data-i18n="t_win">Studio 7 — Industrial Building · Winery</div><div class="tli-sub">Skopje, MK</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><a class="tlilink" href="project-winery.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><path d="M150,18 A120,120 0 1,1 149,18" fill="none" stroke="#fff" stroke-width=".5" stroke-dasharray="330,45"/><ellipse cx="150" cy="110" rx="36" ry="24" fill="none" stroke="#fff" stroke-width=".8"/></svg><div class="tliprev-lbl" data-i18n="t_win">Winery — Studio 7</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- RESEARCH: Architecture Theory -->
+      <div class="tli research nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2014</div><div class="tli-title" data-i18n="t_post">Architecture Theory — Tetovo's Post</div><div class="tli-sub">Tetovo, MK</div><div class="tli-role" data-i18n="lg_res">Research</div><div class="tli-att"><button class="tlilink" onclick="ytOpen('','Architecture Theory')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- RESEARCH: Revitalisation -->
+      <div class="tli research nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2014</div><div class="tli-title" data-i18n="t_rev">Revitalisation and Adaptation</div><div class="tli-sub">North Macedonia</div><div class="tli-role" data-i18n="lg_res">Research</div><div class="tli-att"><button class="tlilink" onclick="ytOpen('','Revitalisation')">▶ <span data-i18n="vid">Video</span></button></div></div></div>
+
+      <!-- EVENT: Self-employed -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2014 – 2019</div><div class="tli-title" data-i18n="t_self">Self-employed Architect</div><div class="tli-sub" data-i18n="t_selfs">Independent Practice</div><div class="tli-role" data-i18n="t_selfr">Tetovo, NMK · Residential, Interior, Site Supervision</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- INTERIOR: The Corner -->
+      <div class="tli interior nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2014</div><div class="tli-title">The Corner</div><div class="tli-sub">Tetovo, MK</div><div class="tli-role" data-i18n="lg_int">Interior Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- LANDSCAPE: Brother's Garden -->
+      <div class="tli landscape nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2014</div><div class="tli-title" data-i18n="t_bro">Brother's Garden</div><div class="tli-sub">Negotino, Tetovo</div><div class="tli-role" data-i18n="lg_lan">Landscape Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- INTERIOR: Black And White -->
+      <div class="tli interior nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2013 – 2015</div><div class="tli-title" data-i18n="t_bw">Black And White</div><div class="tli-sub">Bogovinje, MK</div><div class="tli-role" data-i18n="lg_int">Interior Design</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- PROJECT: Bachelor Fire Station -->
+      <div class="tli education clickable" onclick="window.location='project-firestation.html'"><div class="tli-sym"></div><div><div class="tli-yr">2013</div><div class="tli-title" data-i18n="t_bach">Bachelor Degree — Fire Station, Kamenjane</div><div class="tli-sub">University of Tetovo</div><div class="tli-role" data-i18n="t_bachr">Grade DE 2,61 / MK 8,39</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><a class="tlilink" href="project-firestation.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a><a class="tlilink" href="D04 Bachelor/thesis.pdf" target="_blank" onclick="event.stopPropagation()">↓ PDF</a><button class="tlilink" onclick="event.stopPropagation();ytOpen('','Bachelor Fire Station')">▶ <span data-i18n="vid">Video</span></button></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="80" width="220" height="90" fill="none" stroke="#fff" stroke-width=".6"/><rect x="30" y="90" width="32" height="72" fill="none" stroke="#fff" stroke-width=".4"/><rect x="72" y="90" width="32" height="72" fill="none" stroke="#fff" stroke-width=".4"/><line x1="260" y1="170" x2="272" y2="16" stroke="#fff" stroke-width=".7"/><circle cx="267" cy="11" r="14" fill="none" stroke="#fff" stroke-width=".7"/></svg><div class="tliprev-lbl" data-i18n="t_bach">Fire Station — Bachelor</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- EVENT: Studio ODA -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2013 – 2014</div><div class="tli-title" data-i18n="t_arch">Architect</div><div class="tli-sub">Studio ODA</div><div class="tli-role" data-i18n="t_odar">Tetovo, NMK · Conceptual Design, Permit Applications</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- EDUCATION: Studio 3 -->
+      <div class="tli education nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2011</div><div class="tli-title" data-i18n="t_s3">Studio 3 — Public Building · School</div><div class="tli-sub">Kamenjane, MK</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span></div></div></div>
+
+      <!-- EDUCATION: Architect's Table -->
+      <div class="tli education nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2011</div><div class="tli-title" data-i18n="t_table">Architect's Table</div><div class="tli-sub">Tetovo, MK</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><a class="tlilink" href="D02 Table/index.html">⌂ D02 Table</a></div></div></div>
+
+      <!-- RESEARCH: Handicap -->
+      <div class="tli research nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2011</div><div class="tli-title" data-i18n="t_han">Handicap Access in Public Buildings — Tetovo</div><div class="tli-sub">Tetovo, NMK</div><div class="tli-role" data-i18n="lg_res">Research</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span><a class="tlilink" href="R02 Qasja/research.pdf" target="_blank">↓ PDF</a></div></div></div>
+
+      <!-- PROJECT: Studio 1 Housing -->
+      <div class="tli education clickable" onclick="window.location='project-housing-studio1.html'"><div class="tli-sym"></div><div><div class="tli-yr">2010</div><div class="tli-title" data-i18n="t_s1">Studio 1 — Housing</div><div class="tli-sub">Tetovo, MK</div><div class="tli-role" data-i18n="t_stud">Design / Studies</div><div class="tli-att"><span class="tli-stat" data-i18n="cpt">Concept</span><a class="tlilink" href="project-housing-studio1.html" onclick="event.stopPropagation()" data-i18n="open_p">Open Project</a></div></div><div class="tliprev"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect x="55" y="35" width="160" height="120" fill="none" stroke="#fff" stroke-width=".7"/><rect x="55" y="35" width="160" height="60" fill="none" stroke="#fff" stroke-width=".4"/><rect x="70" y="48" width="32" height="30" fill="none" stroke="#fff" stroke-width=".3"/><rect x="215" y="35" width="50" height="120" fill="none" stroke="#fff" stroke-width=".5"/></svg><img class="tli-img-prev" src="13-d01-3D_Exterior_Render_01.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s;" onerror="this.style.display='none'"><div class="tliprev-lbl" data-i18n="t_s1">Studio 1 — Housing</div><div class="tli-arr">→ Open</div></div></div>
+
+      <!-- EVENT: Start of Architecture Studies -->
+      <div class="tli education nopreview"><div class="tli-sym"></div><div><div class="tli-yr">2009</div><div class="tli-title" data-i18n="t_bdeg">Start of Architecture Studies</div><div class="tli-sub" data-i18n="t_bsub">State University of Tetovo · North Macedonia</div><div class="tli-att"><span class="tli-stat" data-i18n="done">Completed</span></div></div></div>
+
+      <!-- EVENT: Born -->
+      <div class="tli career nopreview"><div class="tli-sym"></div><div><div class="tli-yr">1991</div><div class="tli-title" data-i18n="t_born">Born in Zagreb, Croatia</div><div class="tli-sub">Zagreb, Croatia</div></div></div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="rev">
+    <div class="slbl" data-i18n="c_lbl">Contact</div>
+    <h2 class="ch">Let's<br><em>Connect</em></h2>
+    <a href="mailto:info@avarch.de" class="clink"><div><span class="clink-lbl" data-i18n="c_email">Email</span><span class="clink-val">info@avarch.de</span></div><span class="carr">→</span></a>
+    <a href="https://www.linkedin.com/in/valonaliti" target="_blank" class="clink"><div><span class="clink-lbl">LinkedIn</span><span class="clink-val">linkedin.com/in/valonaliti</span></div><span class="carr">→</span></a>
+    <a href="https://instagram.com/avarchitect" target="_blank" class="clink"><div><span class="clink-lbl">Instagram</span><span class="clink-val">@avarchitect</span></div><span class="carr">→</span></a>
+  </div>
+  <div class="rev" style="animation-delay:.1s;padding-top:.5rem">
+    <p class="avail"><span class="avdot"></span><span data-i18n="avail">Open to collaborations, networking and project inquiries. Projects in Germany can be coordinated through POS4 Architekten.</span></p>
+    <div style="margin-top:2rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(255,255,255,.2);line-height:1.9;text-transform:uppercase;">
+      <p>Düsseldorf, Germany</p><p style="margin-top:.6rem">© 2025 Valon Aliti · avarch.de</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top"><p class="footer-disclaimer">Selected projects presented on this website were developed as part of professional work at POS4 Architekten and previous collaborations. Project authorship, copyrights and responsibilities remain with the respective contributors and project owners where applicable. All drawings, renderings and visual materials are displayed for portfolio and presentation purposes only.</p></div>
+  <div class="footer-bottom">
+    <span class="fc">© 2025 Valon Aliti · Architect · Düsseldorf</span>
+    <div class="fl"><a href="index.html">Home</a><a href="works.html" data-i18n="nav_works">Works</a><a href="mailto:info@avarch.de" data-i18n="c_email">Contact</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+    <div class="fl"><a href="https://www.linkedin.com/in/valonaliti" target="_blank">LinkedIn</a><a href="https://instagram.com/avarchitect" target="_blank">Instagram</a></div>
+  </div>
+</footer>
+<script>
+// CURSOR
+var cr=document.getElementById('cr'),crr=document.getElementById('crr'),mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cr.style.left=mx+'px';cr.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;crr.style.left=rx+'px';crr.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.tli.clickable').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cr.style.transform='translate(-50%,-50%) scale(2)';crr.style.width='40px';crr.style.height='40px';});
+  el.addEventListener('mouseleave',function(){cr.style.transform='translate(-50%,-50%) scale(1)';crr.style.width='24px';crr.style.height='24px';});
+});
+// NAV
+function goto(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});return false;}
+var navAs=document.querySelectorAll('.n-links a');
+window.addEventListener('scroll',function(){
+  var cur='hero';
+  ['hero','about','timeline','contact'].forEach(function(id){var el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-180)cur=id;});
+  navAs.forEach(function(a){a.classList.toggle('act',a.getAttribute('href')==='#'+cur);});
+},{passive:true});
+// YOUTUBE
+function ytOpen(id,title){
+  var m=document.getElementById('yt-modal'),f=document.getElementById('yt-frame'),p=document.getElementById('yt-ph');
+  if(id&&id.length>3){f.src='https://www.youtube.com/embed/'+id+'?autoplay=1';f.style.display='block';p.textContent='';}
+  else{f.style.display='none';p.textContent=title+'\nYouTube placeholder — add video ID';}
+  m.classList.add('open');
+}
+function ytClose(){document.getElementById('yt-modal').classList.remove('open');document.getElementById('yt-frame').src='';}
+document.getElementById('yt-modal').addEventListener('click',function(e){if(e.target===this)ytClose();});
+// THREE.JS
+try{
+  var canvas=document.getElementById('thr');
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(canvas.parentElement.clientWidth,canvas.parentElement.clientHeight);
+  renderer.setClearColor(0,0);
+  var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(60,canvas.parentElement.clientWidth/canvas.parentElement.clientHeight,.1,200);
+  camera.position.set(0,0,14);
+  scene.add(new THREE.AmbientLight(0x111111,1));
+  var dL=new THREE.DirectionalLight(0xffffff,.55);dL.position.set(5,10,8);scene.add(dL);
+  var aL=new THREE.PointLight(0xffffff,.65,30);aL.position.set(-6,3,6);scene.add(aL);
+  var grp=new THREE.Group();scene.add(grp);
+  var mS=new THREE.MeshStandardMaterial({color:0x181818,metalness:.7,roughness:.3});
+  var mW=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,opacity:.11,transparent:true});
+  var mA=new THREE.MeshStandardMaterial({color:0x666666,metalness:.9,roughness:.15});
+  var mG=new THREE.MeshStandardMaterial({color:0x333333,metalness:.9,roughness:.1,transparent:true,opacity:.45});
+  var bG=new THREE.BoxGeometry(6,2.5,1.2);
+  grp.add(new THREE.Mesh(bG,mS));var bw=new THREE.Mesh(bG,mW);bw.scale.set(1.002,1.002,1.002);grp.add(bw);
+  var tG=new THREE.BoxGeometry(.8,4,.8);
+  var tw=new THREE.Mesh(tG,mS);tw.position.set(-2.2,1.8,0);grp.add(tw);
+  var tww=new THREE.Mesh(tG,mW);tww.position.set(-2.2,1.8,0);grp.add(tww);
+  var roof=new THREE.Mesh(new THREE.BoxGeometry(6.2,.08,1.3),mA);roof.position.set(.1,1.26,0);roof.rotation.z=.04;grp.add(roof);
+  var glass=new THREE.Mesh(new THREE.BoxGeometry(4,2,.15),mG);glass.position.set(.8,0,.53);grp.add(glass);
+  var vol=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.2,1.2),mS);vol.position.set(3.2,-.65,0);grp.add(vol);
+  var vw=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.2,1.2),mW);vw.position.set(3.2,-.65,0);grp.add(vw);
+  var sCs=[];
+  for(var i=0;i<5;i++){var sc=new THREE.Mesh(new THREE.BoxGeometry(.22,.3+Math.random()*.4,.22),new THREE.MeshStandardMaterial({color:0x0a0a0a,metalness:.5,roughness:.6}));var a=(i/5)*Math.PI*2;sc.position.set(Math.cos(a)*5.5,-1.5,Math.sin(a)*2.5);grp.add(sc);sCs.push({mesh:sc,angle:a,speed:.0003+Math.random()*.0002});}
+  var tRY=0,tRX=0,cRY=0,cRX=0,drag=false,lx=0,ly=0;
+  canvas.addEventListener('mousedown',function(e){drag=true;lx=e.clientX;ly=e.clientY;});
+  window.addEventListener('mouseup',function(){drag=false;});
+  window.addEventListener('mousemove',function(e){if(drag){tRY+=(e.clientX-lx)*.008;tRX+=(e.clientY-ly)*.005;lx=e.clientX;ly=e.clientY;}else{tRY=(e.clientX/innerWidth-.5)*.4;tRX=(e.clientY/innerHeight-.5)*-.15;}},{passive:true});
+  var t=0;
+  (function anim(){requestAnimationFrame(anim);t+=.007;cRY+=(tRY-cRY)*.055;cRX+=(tRX-cRX)*.055;grp.rotation.y=cRY+Math.sin(t*.28)*.04;grp.rotation.x=cRX+Math.sin(t*.18)*.018;grp.position.y=Math.sin(t*.38)*.1;aL.intensity=.6+Math.sin(t*1.1)*.1;sCs.forEach(function(s){s.angle+=s.speed;s.mesh.position.x=Math.cos(s.angle)*5.5;s.mesh.position.z=Math.sin(s.angle)*2.5;s.mesh.rotation.y+=.004;});renderer.render(scene,camera);})();
+  window.addEventListener('resize',function(){var w=canvas.parentElement.clientWidth,h=canvas.parentElement.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);},{passive:true});
+}catch(e){console.warn('Three.js:',e.message);}
+// TRANSLATIONS
+var T={
+en:{nav_about:'About',nav_works:'Works',nav_timeline:'Timeline',nav_contact:'Contact',h_lbl:'Architect · BIM Specialist · Düsseldorf',h_sub:'Designing at the intersection of spatial precision and digital intelligence.',scroll:'Scroll',a_lbl:'About',sk_lbl:'Skills & Languages',a_bio:"Based in Düsseldorf, I work at the intersection of architecture, BIM coordination, and sustainable construction. At POS4 Architekten, I lead BIM-integrated planning for public sports facilities and residential buildings — including Germany's first certified sustainable swimming pool.",a_bio2:'My work spans design, technical execution, BIM coordination, and digital collaboration — with a commitment to timber construction and climate-conscious building methodologies.',l_de:'German',l_al:'Albanian',l_en:'English',l_mk:'Macedonian',l_hr:'Croatian',tl_lbl:'Timeline',lg_car:'Career',lg_edu:'Education',lg_lan:'Landscape',lg_int:'Interior',lg_res:'Research',pres:'Present',ongoing:'Ongoing',done:'Completed',cpt:'Concept',in_use:'Completed · In Use',vid:'Video',open_p:'Open Project',t_p4:'Architect · BIM Author · Sub-project Lead',t_p4r:'Düsseldorf, DE · LP 1–5 · BIM · Timber · Sustainability',t_bg:'New Sport Complex Bergisch Gladbach',t_bgr:'LP 1–5 · BIM · CLT Timber · Sustainability',t_hb:'Indoor Swimming Pool Leichlingen',t_hbr:'Public swimming pool · BIM · Nachhaltigkeit',t_park:'Park Along the River',t_wf:'Waterfall 6 7 8',t_bio:'Bio Market and Park',t_bim:'Individual Qualification Basic Module',t_bimr:'Certification · Germany · ID: de.0601',t_dush:'Park Dushku',t_wt:'Watertower Renovation',t_wtr:'Residential · Renovation',t_cgn3:'Architect',t_cgn3r:'Frechen, DE · Single-family homes, Renovation, LP 1–5',t_mas:'Master Thesis — Aeronautical & Recreational Center',t_masr:'Grade DE 2,22 / MK 8,88',t_mas_start:'Started Master Degree',t_mas_start_r:'Architecture · Skopje, North Macedonia',t_vel:'Studio 9 — Transportation & Shopping Center, Veles',t_moon:'Moon Shape',t_bur:'Studio 8 — Berlin University Residence (BUR)',t_win:'Studio 7 — Industrial Building · Winery',t_post:"Architecture Theory — Tetovo's Post",t_rev:'Revitalisation and Adaptation',t_self:'Self-employed Architect',t_selfs:'Independent Practice',t_selfr:'Tetovo, NMK · Residential, Interior, Site Supervision',t_bro:"Brother's Garden",t_bw:'Black And White',t_bach:'Bachelor Degree — Fire Station, Kamenjane',t_bachr:'Grade DE 2,61 / MK 8,39',t_arch:'Architect',t_odar:'Tetovo, NMK · Conceptual Design, Permit Applications',t_s3:'Studio 3 — Public Building · School',t_table:"Architect's Table",t_han:'Handicap Access in Public Buildings — Tetovo',t_s1:'Studio 1 — Housing',t_bdeg:'Start of Architecture Studies',t_bsub:'State University of Tetovo · North Macedonia',t_born:'Born in Zagreb, Croatia',t_stud:'Design / Studies',c_lbl:'Contact',c_email:'Email',avail:'Open to collaborations, networking and project inquiries. Projects in Germany can be coordinated through POS4 Architekten.'},
+de:{nav_about:'Über mich',nav_works:'Arbeiten',nav_timeline:'Zeitleiste',nav_contact:'Kontakt',h_lbl:'Architekt · BIM-Spezialist · Düsseldorf',h_sub:'Gestaltung an der Schnittstelle von räumlicher Präzision und digitaler Intelligenz.',scroll:'Scrollen',a_lbl:'Über mich',sk_lbl:'Kenntnisse & Sprachen',a_bio:'In Düsseldorf arbeite ich an der Schnittstelle von Architektur, BIM-Koordination und nachhaltigem Bauen. Bei POS4 Architekten leite ich die BIM-integrierte Planung für öffentliche Sportanlagen und Mehrfamilienhäuser.',a_bio2:'Meine Tätigkeit umfasst Entwurf, technische Ausführung, BIM-Koordination und digitale Zusammenarbeit — mit Schwerpunkt auf Holzbau und klimabewussten Bauweisen.',l_de:'Deutsch',l_al:'Albanisch',l_en:'Englisch',l_mk:'Mazedonisch',l_hr:'Kroatisch',tl_lbl:'Zeitleiste',lg_car:'Beruf',lg_edu:'Ausbildung',lg_lan:'Landschaft',lg_int:'Innenarchitektur',lg_res:'Forschung',pres:'Heute',ongoing:'Laufend',done:'Abgeschlossen',cpt:'Konzept',in_use:'Abgeschlossen · In Betrieb',vid:'Video',open_p:'Projekt öffnen',t_p4:'Architekt · BIM-Autor · Teilprojektleiter',t_p4r:'Düsseldorf, DE · LP 1–5 · BIM · Holzbau · Nachhaltigkeit',t_bg:'Neuer Sportkomplex Bergisch Gladbach',t_bgr:'LP 1–5 · BIM · Brettsperrholz · Nachhaltigkeit',t_hb:'Hallenbad Leichlingen',t_hbr:'Öffentliches Hallenbad · BIM · Nachhaltigkeit',t_park:'Park am Fluss',t_wf:'Wasserfall 6 7 8',t_bio:'Biomarkt und Park',t_bim:'Individuelle Qualifikation Basismodul',t_bimr:'Zertifizierung · Deutschland · ID: de.0601',t_dush:'Park Dushku',t_wt:'Wasserturm Sanierung',t_wtr:'Wohngebäude · Sanierung',t_cgn3:'Architekt',t_cgn3r:'Frechen, DE · Einfamilienhäuser, Sanierung, LP 1–5',t_mas:'Masterarbeit — Luft- und Freizeitzentrum',t_masr:'Note DE 2,22 / MK 8,88',t_mas_start:'Masterstudium begonnen',t_mas_start_r:'Architektur · Skopje, Nordmazedonien',t_vel:'Studio 9 — Verkehrs- und Einkaufszentrum, Veles',t_moon:'Mondform',t_bur:'Studio 8 — Berliner Universitätsresidenz (BUR)',t_win:'Studio 7 — Industriebau · Weingut',t_post:'Architekturtheorie — Tetovos Post',t_rev:'Revitalisierung und Anpassung',t_self:'Selbständiger Architekt',t_selfs:'Freiberufliche Tätigkeit',t_selfr:'Tetovo, NMK · Wohnbau, Innenarchitektur, Bauleitung',t_bro:'Garten des Bruders',t_bw:'Schwarz und Weiß',t_bach:'Bachelorabschluss — Feuerwehrstation, Kamenjane',t_bachr:'Note DE 2,61 / MK 8,39',t_arch:'Architekt',t_odar:'Tetovo, NMK · Entwurfsplanung, Bauanträge',t_s3:'Studio 3 — Öffentliches Gebäude · Schule',t_table:'Architektentisch',t_han:'Barrierefreier Zugang in öffentlichen Gebäuden — Tetovo',t_s1:'Studio 1 — Wohnungsbau',t_bdeg:'Beginn des Architekturstudiums',t_bsub:'Staatliche Universität Tetovo · Nordmazedonien',t_born:'Geboren in Zagreb, Kroatien',t_stud:'Entwurf / Studium',c_lbl:'Kontakt',c_email:'E-Mail',avail:'Offen für Kooperationen, Vernetzung und Projektanfragen. Projekte in Deutschland können über POS4 Architekten koordiniert werden.'},
+al:{nav_about:'Rreth meje',nav_works:'Punime',nav_timeline:'Kronologji',nav_contact:'Kontakt',h_lbl:'Arkitekt · Specialist BIM · Düsseldorf',h_sub:'Projektim në kryqëzimin e precizionit hapësinor dhe inteligjencës digjitale.',scroll:'Shkulo',a_lbl:'Rreth meje',sk_lbl:'Aftësi & Gjuhë',a_bio:'Bazuar në Düsseldorf, punoj në kryqëzimin e arkitekturës, koordinimit BIM dhe ndërtimit të qëndrueshëm.',a_bio2:'Puna ime përfshin dizajn, ekzekutim teknik, koordinim BIM dhe bashkëpunim dixhital.',l_de:'Gjermanisht',l_al:'Shqip',l_en:'Anglisht',l_mk:'Maqedonisht',l_hr:'Kroatisht',tl_lbl:'Kronologji',lg_car:'Karriera',lg_edu:'Arsimi',lg_lan:'Landskap',lg_int:'Interior',lg_res:'Kërkim',pres:'Sot',ongoing:'Në vazhdim',done:'Përfunduar',cpt:'Koncept',in_use:'Përfunduar · Në Përdorim',vid:'Video',open_p:'Hap Projektin',t_p4:'Arkitekt · Autor BIM · Nënprojektues',t_p4r:'Düsseldorf, DE · LP 1–5 · BIM · Ndërtim Druri',t_bg:'Kompleks i ri Sportiv Bergisch Gladbach',t_bgr:'LP 1–5 · BIM · CLT · Qëndrueshmëri',t_hb:'Pishinë e mbyllur Leichlingen',t_hbr:'Pishinë publike · BIM · Qëndrueshmëri',t_park:'Park Gjatë Lumit',t_wf:'Ujëvara 6 7 8',t_bio:'Treg Bio dhe Park',t_bim:'Kualifikim Individual Modul Bazë',t_bimr:'Çertifikim · Gjermani · ID: de.0601',t_dush:'Park Dushku',t_wt:'Rinovim i Kullës së Ujit',t_wtr:'Banim · Rinovim',t_cgn3:'Arkitekt',t_cgn3r:'Frechen, DE · Shtëpi njëfamiljare, Rinovim, LP 1–5',t_mas:'Teza Master — Qendër Aeronautike dhe Argëtimi',t_masr:'Nota DE 2,22 / MK 8,88',t_mas_start:'Fillimi i Studimeve Master',t_mas_start_r:'Arkitekturë · Shkup, Maqedonia e Veriut',t_vel:'Studio 9 — Qendër Transporti & Tregtie, Veles',t_moon:'Forma Hënore',t_bur:'Studio 8 — Rezidencë Universitare Berlini (BUR)',t_win:'Studio 7 — Ndërtesë Industriale · Kantinë',t_post:'Teoria e Arkitekturës — Posta e Tetovës',t_rev:'Revitalizim dhe Përshtatje',t_self:'Arkitekt i Pavarur',t_selfs:'Praktikë e Pavarur',t_selfr:'Tetovë, MK · Banim, Interior, Mbikëqyrje',t_bro:'Kopshti i Vëllait',t_bw:'E zeza dhe e bardha',t_bach:'Diplomë Bachelor — Stacion Zjarrfikës, Kamenjane',t_bachr:'Nota DE 2,61 / MK 8,39',t_arch:'Arkitekt',t_odar:'Tetovë, MK · Dizajn Konceptual, Leje Ndërtimi',t_s3:'Studio 3 — Ndërtesë Publike · Shkollë',t_table:'Tavolina e Arkitektit',t_han:'Qasja për Personat me Aftësi të Kufizuara — Tetovë',t_s1:'Studio 1 — Banim',t_bdeg:'Fillimi i Studimeve të Arkitekturës',t_bsub:'Universiteti Shtetëror i Tetovës · Maqedonia e Veriut',t_born:'Lindur në Zagreb, Kroaci',t_stud:'Dizajn / Studime',c_lbl:'Kontakt',c_email:'Email',avail:'I hapur për bashkëpunime, rrjetëzim dhe pyetje projektesh. Projektet në Gjermani mund të koordinohen përmes POS4 Architekten.'},
+mk:{nav_about:'За мене',nav_works:'Трудови',nav_timeline:'Хронологија',nav_contact:'Контакт',h_lbl:'Архитект · BIM Специјалист · Диселдорф',h_sub:'Проектирање на пресекот на просторна прецизност и дигитална интелигенција.',scroll:'Скролај',a_lbl:'За мене',sk_lbl:'Вештини и Јазици',a_bio:'Базиран во Диселдорф, работам на пресекот на архитектура, BIM координација и одржливо градење.',a_bio2:'Мојата работа опфаќа дизајн, техничка реализација, BIM координација и дигитална соработка.',l_de:'Германски',l_al:'Албански',l_en:'Англиски',l_mk:'Македонски',l_hr:'Хрватски',tl_lbl:'Хронологија',lg_car:'Кариера',lg_edu:'Образование',lg_lan:'Пејзаж',lg_int:'Ентериер',lg_res:'Истражување',pres:'Денес',ongoing:'Тековно',done:'Завршено',cpt:'Концепт',in_use:'Завршено · Во Употреба',vid:'Видео',open_p:'Отвори Проект',t_p4:'Архитект · BIM Автор · Поддиректор',t_p4r:'Диселдорф, DE · LP 1–5 · BIM · Дрво · Одржливост',t_bg:'Нов Спортски Комплекс Бергиш Гладбах',t_bgr:'LP 1–5 · BIM · CLT · Одржливост',t_hb:'Затворен Базен Лајхлинген',t_hbr:'Јавен базен · BIM · Одржливост',t_park:'Парк Покрај Реката',t_wf:'Водопад 6 7 8',t_bio:'Биопазар и Парк',t_bim:'Индивидуална Квалификација Основен Модул',t_bimr:'Сертификација · Германија · ID: de.0601',t_dush:'Парк Душку',t_wt:'Реновирање на Водна Кула',t_wtr:'Станбено · Реновирање',t_cgn3:'Архитект',t_cgn3r:'Фрехен, DE · Семејни куќи, Реновирање, LP 1–5',t_mas:'Магистерска Работа — Аеронаутичко и Рекреативно Средиште',t_masr:'Оценка DE 2,22 / MK 8,88',t_mas_start:'Почеток на Магистерски Студии',t_mas_start_r:'Архитектура · Скопје, Северна Македонија',t_vel:'Студио 9 — Сообраќаен и Трговски Центар, Велес',t_moon:'Месечева Форма',t_bur:'Студио 8 — Берлинска Студентска Резиденција (BUR)',t_win:'Студио 7 — Индустриска Зграда · Винарница',t_post:'Теорија на Архитектура — Пошта на Тетово',t_rev:'Ревитализација и Адаптација',t_self:'Самостоен Архитект',t_selfs:'Независна Практика',t_selfr:'Тетово, МК · Станбено, Ентериер, Надзор',t_bro:'Градина на Братот',t_bw:'Црно и Бело',t_bach:'Дипломска работа — Противпожарна Станица, Камењане',t_bachr:'Оценка DE 2,61 / MK 8,39',t_arch:'Архитект',t_odar:'Тетово, МК · Концептуален Дизајн, Дигитални Дозволи',t_s3:'Студио 3 — Јавна Зграда · Училиште',t_table:'Маса на Архитектот',t_han:'Пристап за Лица со Хендикеп — Тетово',t_s1:'Студио 1 — Домување',t_bdeg:'Почеток на Студии по Архитектура',t_bsub:'Државен Универзитет Тетово · Северна Македонија',t_born:'Роден во Загреб, Хрватска',t_stud:'Дизајн / Студии',c_lbl:'Контакт',c_email:'Е-пошта',avail:'Отворен за соработки, вмрежување и проектни прашања. Проекти во Германија може да се координираат преку POS4 Architekten.'}
+};
+function setLang(l){
+  document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on');});
+  var btn=document.querySelector('.lb[onclick="setLang(\''+l+'\')"]');
+  if(btn)btn.classList.add('on');
+  var t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(t&&t[k]!==undefined)el.textContent=t[k];});
+}
+setLang('en');
+</script>
+</body>
+</html>

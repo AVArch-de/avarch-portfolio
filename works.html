@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Works · Valon Aliti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--bg2:#0f0f0f;--w:#fff;--mid:rgba(255,255,255,.6);--muted:rgba(255,255,255,.35);--line:rgba(255,255,255,.08);--serif:'Cormorant Garamond',serif;--mono:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:var(--serif);overflow-x:hidden;cursor:none;}
+#cr{position:fixed;width:6px;height:6px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#crr{position:fixed;width:24px;height:24px;border:1px solid rgba(255,255,255,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 4rem;background:rgba(8,8,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.n-logo{font-family:var(--serif);font-size:.95rem;font-weight:300;font-style:italic;color:#fff;text-decoration:none;}
+.n-links{display:flex;gap:2.5rem;list-style:none;}
+.n-links a{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;white-space:nowrap;}
+.n-links a:hover,.n-links a.act{color:#fff;}
+.n-lang{display:flex;gap:.5rem;}
+.lb{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--muted);background:none;border:none;cursor:none;text-transform:uppercase;transition:color .2s;padding:.15rem .3rem;}
+.lb.on,.lb:hover{color:#fff;}
+
+/* HERO BANNER */
+.works-hero{padding:18vh 8vw 6vw;border-bottom:1px solid var(--line);}
+.works-eyebrow{font-family:var(--mono);font-size:.56rem;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:1.5rem;animation:up .8s .1s both;}
+.works-title{font-size:clamp(3rem,7vw,7rem);font-weight:300;line-height:.9;color:#fff;animation:up .8s .25s both;}
+.works-title em{font-style:italic;color:var(--mid);}
+.works-sub{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--muted);margin-top:1.8rem;max-width:480px;line-height:1.8;animation:up .8s .4s both;}
+
+/* FILTER TABS */
+.filter-bar{display:flex;gap:0;padding:0 8vw;border-bottom:1px solid var(--line);position:sticky;top:64px;z-index:100;background:rgba(8,8,8,.95);backdrop-filter:blur(12px);}
+.ftab{font-family:var(--mono);font-size:.54rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;padding:1.2rem 1.8rem 1.2rem 0;cursor:pointer;transition:color .2s,border-color .2s;white-space:nowrap;}
+.ftab:hover{color:rgba(255,255,255,.7);}
+.ftab.active{color:#fff;border-bottom-color:#fff;}
+
+/* CONTENT */
+.works-content{padding:0 8vw 8vw;}
+
+/* CATEGORY SECTION */
+.cat-section{padding-top:6vw;}
+.cat-section.hidden{display:none;}
+.cat-header{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:3.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--line);}
+.cat-title{font-size:clamp(1.8rem,3vw,3rem);font-weight:300;color:#fff;line-height:1;}
+.cat-title em{font-style:italic;color:var(--mid);}
+.cat-count{font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+
+/* WORK CARDS GRID */
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+.wcard{position:relative;background:var(--bg);overflow:hidden;cursor:pointer;transition:background .25s;}
+.wcard:hover{background:var(--bg2);}
+.wcard-visual{position:relative;aspect-ratio:4/3;overflow:hidden;background:#111;}
+.wcard-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.15;transition:opacity .4s;}
+.wcard:hover .wcard-svg{opacity:.3;}
+.wcard-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s,transform .6s;}
+.wcard:hover .wcard-img{opacity:1;transform:scale(1.04);}
+.wcard-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.7) 0%,transparent 60%);}
+.wcard-body{padding:1.4rem 1.5rem 1.8rem;}
+.wcard-year{font-family:var(--mono);font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem;}
+.wcard-title{font-size:1.1rem;font-weight:300;color:#fff;line-height:1.15;margin-bottom:.3rem;}
+.wcard-title em{font-style:italic;color:var(--mid);}
+.wcard-sub{font-size:.8rem;font-style:italic;color:var(--muted);margin-bottom:.5rem;}
+.wcard-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem;}
+.wtag{font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);padding:.1rem .4rem;text-transform:uppercase;}
+.wcard-arrow{position:absolute;top:1rem;right:1rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:rgba(255,255,255,.25);opacity:0;transition:opacity .25s;text-transform:uppercase;}
+.wcard:hover .wcard-arrow{opacity:1;}
+
+/* Research list style (not grid) */
+.research-list{display:flex;flex-direction:column;gap:0;}
+.ritem{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 0;border-bottom:1px solid var(--line);cursor:default;}
+.ritem-left{display:flex;align-items:baseline;gap:1.5rem;}
+.ritem-year{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;width:60px;flex-shrink:0;}
+.ritem-title{font-size:1rem;font-weight:300;color:#fff;}
+.ritem-sub{font-size:.8rem;font-style:italic;color:var(--muted);margin-top:.2rem;}
+.ritem-tag{font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);padding:.12rem .45rem;text-transform:uppercase;}
+
+/* FOOTER */
+footer{padding:2rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+.fc{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;}
+.fl{display:flex;gap:1.5rem;}
+.fl a{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.22);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;}
+.fl a:hover{color:#fff;}
+
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.rev{animation:up .7s cubic-bezier(.16,1,.3,1) both;}
+
+@media(max-width:900px){
+  #nav{padding:1.1rem 1.5rem;}
+  .n-links{gap:1.2rem;}
+  .works-grid{grid-template-columns:1fr 1fr;}
+  .filter-bar{padding:0 5vw;gap:0;overflow-x:auto;}
+  .ftab{padding:1rem 1.2rem 1rem 0;font-size:.5rem;}
+  footer{padding:1.5rem;}
+}
+@media(max-width:600px){
+  .works-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="cr"></div><div id="crr"></div>
+
+<nav id="nav">
+  <a href="index.html" class="n-logo">V.A.</a>
+  <ul class="n-links">
+    <li><a href="index.html#about"    data-i18n="nav_about">About</a></li>
+    <li><a href="works.html"          data-i18n="nav_works" class="act">Works</a></li>
+    <li><a href="index.html#timeline" data-i18n="nav_timeline">Timeline</a></li>
+    <li><a href="index.html#contact"  data-i18n="nav_contact">Contact</a></li>
+  </ul>
+  <div class="n-lang">
+    <button class="lb on" onclick="setLang('en')">EN</button>
+    <button class="lb" onclick="setLang('de')">DE</button>
+    <button class="lb" onclick="setLang('al')">AL</button>
+    <button class="lb" onclick="setLang('mk')">MK</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="works-hero">
+  <p class="works-eyebrow" data-i18n="w_eye">Architecture · Interior · Landscape · Research</p>
+  <h1 class="works-title" data-i18n="w_title">Selected<br><em>Works</em></h1>
+  <p class="works-sub" data-i18n="w_sub">Projects and research spanning architecture, interior design, landscape, and academic study — from Düsseldorf to North Macedonia.</p>
+</div>
+
+<!-- FILTER TABS -->
+<div class="filter-bar">
+  <button class="ftab active" onclick="filter('all')"    data-i18n="f_all">All</button>
+  <button class="ftab"        onclick="filter('design')" data-i18n="f_des">Design &amp; Studies</button>
+  <button class="ftab"        onclick="filter('int')"    data-i18n="f_int">Interior</button>
+  <button class="ftab"        onclick="filter('land')"   data-i18n="f_lan">Landscape</button>
+  <button class="ftab"        onclick="filter('res')"    data-i18n="f_res">Research</button>
+</div>
+
+<!-- CONTENT -->
+<div class="works-content">
+
+  <!-- DESIGN & STUDIES -->
+  <div class="cat-section" id="cat-design">
+    <div class="cat-header rev">
+      <h2 class="cat-title" data-i18n="cat_des">Design &amp; <em>Studies</em></h2>
+      <span class="cat-count">08 <span data-i18n="works_lbl">works</span></span>
+    </div>
+    <div class="works-grid rev" style="animation-delay:.1s">
+
+
+      <!-- Sportkomplex Bergisch Gladbach -->
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(160deg,#1a2a1a,#080c08)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="80" width="360" height="160" fill="none" stroke="#fff" stroke-width=".7"/>
+            <rect x="20" y="80" width="180" height="160" fill="none" stroke="#fff" stroke-width=".4"/>
+            <line x1="20" y1="80" x2="20" y2="40" stroke="#fff" stroke-width=".5"/>
+            <line x1="380" y1="80" x2="380" y2="55" stroke="#fff" stroke-width=".5"/>
+            <path d="M20,40 Q200,15 380,55" fill="none" stroke="#fff" stroke-width=".6"/>
+            <rect x="185" y="120" width="80" height="80" fill="none" stroke="#fff" stroke-width=".4"/>
+            <line x1="0" y1="240" x2="400" y2="240" stroke="#fff" stroke-width=".3"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2024 – 2025</div>
+          <div class="wcard-title" data-i18n="bg_title">Neuer Sportkomplex <em>Bergisch Gladbach</em></div>
+          <div class="wcard-sub">POS4 Architekten · Bergisch Gladbach-Refrath, DE</div>
+          <div class="wcard-tags"><span class="wtag">BIM</span><span class="wtag">LP 1–5</span><span class="wtag">CLT Timber</span><span class="wtag">🏆 BIM Champions 2025</span></div>
+        </div>
+      </div>
+
+      <!-- Hallenbad -->
+      <div class="wcard" onclick="window.location='project-hallenbad.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="60" width="360" height="160" fill="none" stroke="#fff" stroke-width=".7"/>
+            <rect x="35" y="72" width="70" height="112" fill="none" stroke="#fff" stroke-width=".4"/>
+            <rect x="120" y="72" width="70" height="112" fill="none" stroke="#fff" stroke-width=".4"/>
+            <line x1="20" y1="60" x2="20" y2="22" stroke="#fff" stroke-width=".5"/>
+            <line x1="380" y1="60" x2="380" y2="22" stroke="#fff" stroke-width=".5"/>
+            <line x1="20" y1="22" x2="380" y2="22" stroke="#fff" stroke-width=".5"/>
+            <line x1="0" y1="220" x2="400" y2="220" stroke="#fff" stroke-width=".3"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2019 – Present</div>
+          <div class="wcard-title" data-i18n="hb_title">Hallenbad <em>Leichlingen</em></div>
+          <div class="wcard-sub">POS4 Architekten · Leichlingen, DE</div>
+          <div class="wcard-tags"><span class="wtag">BIM</span><span class="wtag">LP 1–5</span><span class="wtag">Nachhaltigkeit</span><span class="wtag">Ongoing</span></div>
+        </div>
+      </div>
+
+      <!-- Airport / Master -->
+      <div class="wcard" onclick="window.location='project-airport.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="180" width="370" height="18" fill="none" stroke="#fff" stroke-width=".6"/>
+            <polygon points="110,180 155,70 200,180" fill="none" stroke="#fff" stroke-width=".8"/>
+            <line x1="155" y1="70" x2="155" y2="30" stroke="#fff" stroke-width=".5"/>
+            <circle cx="270" cy="130" r="42" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="330" y="110" width="55" height="55" fill="none" stroke="#fff" stroke-width=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2016 – 2018</div>
+          <div class="wcard-title" data-i18n="ap_title">Airport on <em>Military Site</em></div>
+          <div class="wcard-sub" data-i18n="ap_sub">Master Thesis · Tetovo–Gostivar, MK</div>
+          <div class="wcard-tags"><span class="wtag">Master</span><span class="wtag">Constructivist</span><span class="wtag">Grade 2,22</span></div>
+        </div>
+      </div>
+
+      <!-- Veles Studio 9 -->
+      <div class="wcard" onclick="window.location='project-veles.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="25" width="25" height="160" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="65" y="25" width="25" height="160" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="285" y="25" width="25" height="160" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="325" y="25" width="25" height="160" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="90" y="75" width="195" height="120" fill="none" stroke="#fff" stroke-width=".7"/>
+            <path d="M0,220 Q100,205 200,220 Q300,235 400,220" fill="none" stroke="#fff" stroke-width=".8" opacity=".4"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2016</div>
+          <div class="wcard-title" data-i18n="vel_title">Verkehrsstation <em>Veles</em></div>
+          <div class="wcard-sub" data-i18n="vel_sub">Studio 9 · Master Studies · Veles, MK</div>
+          <div class="wcard-tags"><span class="wtag">Urban</span><span class="wtag">Transit Hub</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <!-- Winery Studio 7 -->
+      <div class="wcard" onclick="window.location='project-winery.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <path d="M200,25 A160,160 0 1,1 199,25" fill="none" stroke="#fff" stroke-width=".5" stroke-dasharray="460,60"/>
+            <ellipse cx="200" cy="165" rx="50" ry="34" fill="none" stroke="#fff" stroke-width=".8"/>
+            <line x1="200" y1="131" x2="200" y2="48" stroke="#fff" stroke-width=".3" stroke-dasharray="3,4" opacity=".6"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2014</div>
+          <div class="wcard-title" data-i18n="win_title"><em>Weingut</em> Winery</div>
+          <div class="wcard-sub" data-i18n="win_sub">Studio 7 · Industrial · Skopje, MK</div>
+          <div class="wcard-tags"><span class="wtag">Industrial</span><span class="wtag">Cylinder</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <!-- Fire Station / Bachelor -->
+      <div class="wcard" onclick="window.location='project-firestation.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="100" width="280" height="130" fill="none" stroke="#fff" stroke-width=".6"/>
+            <rect x="40" y="115" width="44" height="105" fill="none" stroke="#fff" stroke-width=".4"/>
+            <rect x="98" y="115" width="44" height="105" fill="none" stroke="#fff" stroke-width=".4"/>
+            <rect x="156" y="115" width="44" height="105" fill="none" stroke="#fff" stroke-width=".4"/>
+            <line x1="335" y1="230" x2="350" y2="22" stroke="#fff" stroke-width=".7"/>
+            <circle cx="344" cy="16" r="18" fill="none" stroke="#fff" stroke-width=".7"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2013</div>
+          <div class="wcard-title" data-i18n="fs_title">Fire <em>Station</em></div>
+          <div class="wcard-sub" data-i18n="fs_sub">Bachelor Thesis · Kamenjane, MK</div>
+          <div class="wcard-tags"><span class="wtag">Public</span><span class="wtag">Bachelor</span><span class="wtag">Grade 2,61</span></div>
+        </div>
+      </div>
+
+
+      <!-- Architect's Table -->
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#141414,#0a0a0a)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="160" width="320" height="12" fill="none" stroke="#fff" stroke-width=".6"/>
+            <line x1="80" y1="172" x2="80" y2="240" stroke="#fff" stroke-width=".6"/>
+            <line x1="320" y1="172" x2="320" y2="240" stroke="#fff" stroke-width=".6"/>
+            <line x1="140" y1="172" x2="140" y2="240" stroke="#fff" stroke-width=".4"/>
+            <line x1="260" y1="172" x2="260" y2="240" stroke="#fff" stroke-width=".4"/>
+            <rect x="100" y="80" width="200" height="80" fill="none" stroke="#fff" stroke-width=".5"/>
+            <line x1="120" y1="100" x2="280" y2="100" stroke="#fff" stroke-width=".3" opacity=".5"/>
+            <line x1="120" y1="120" x2="280" y2="120" stroke="#fff" stroke-width=".3" opacity=".5"/>
+            <line x1="120" y1="140" x2="200" y2="140" stroke="#fff" stroke-width=".3" opacity=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2011</div>
+          <div class="wcard-title" data-i18n="table_title">Architect's <em>Table</em></div>
+          <div class="wcard-sub">Tetovo, MK</div>
+          <div class="wcard-tags"><span class="wtag">Design</span><span class="wtag">Studies</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <!-- Studio 1 Housing -->
+      <div class="wcard" onclick="window.location='project-housing-studio1.html'">
+        <div class="wcard-visual">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="75" y="45" width="210" height="190" fill="none" stroke="#fff" stroke-width=".7"/>
+            <rect x="75" y="45" width="210" height="95" fill="none" stroke="#fff" stroke-width=".4"/>
+            <rect x="92" y="60" width="42" height="40" fill="none" stroke="#fff" stroke-width=".3"/>
+            <rect x="152" y="60" width="42" height="40" fill="none" stroke="#fff" stroke-width=".3"/>
+            <rect x="92" y="130" width="60" height="105" fill="none" stroke="#fff" stroke-width=".3"/>
+            <rect x="285" y="45" width="65" height="190" fill="none" stroke="#fff" stroke-width=".5"/>
+          </svg>
+          <img class="wcard-img" src="13-d01-3D_Exterior_Render_01.jpg" alt="Studio 1" onerror="this.style.display='none'">
+          <div class="wcard-overlay"></div>
+          <div class="wcard-arrow">→ Open</div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2010</div>
+          <div class="wcard-title" data-i18n="s1_title">Studio 1 — <em>Housing</em></div>
+          <div class="wcard-sub" data-i18n="s1_sub">Bachelor Studio · Tetovo, MK</div>
+          <div class="wcard-tags"><span class="wtag">Residential</span><span class="wtag">Corner Site</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INTERIOR -->
+  <div class="cat-section" id="cat-int">
+    <div class="cat-header rev">
+      <h2 class="cat-title" data-i18n="cat_int">Interior <em>Design</em></h2>
+      <span class="cat-count">05 <span data-i18n="works_lbl">works</span></span>
+    </div>
+    <div class="works-grid rev" style="animation-delay:.1s">
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#1a1a1a,#0d0d0d)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="40" width="320" height="220" fill="none" stroke="#fff" stroke-width=".6"/>
+            <line x1="40" y1="140" x2="360" y2="140" stroke="#fff" stroke-width=".4"/>
+            <rect x="160" y="180" width="80" height="80" fill="none" stroke="#fff" stroke-width=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2017</div>
+          <div class="wcard-title">Door <em>Down</em></div>
+          <div class="wcard-sub">Kamjan, MK</div>
+          <div class="wcard-tags"><span class="wtag">Interior</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#1a1810,#0d0c08)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="50" y="50" width="300" height="200" fill="none" stroke="#fff" stroke-width=".6"/>
+            <circle cx="200" cy="150" r="60" fill="none" stroke="#fff" stroke-width=".5"/>
+            <line x1="50" y1="150" x2="140" y2="150" stroke="#fff" stroke-width=".3"/>
+            <line x1="260" y1="150" x2="350" y2="150" stroke="#fff" stroke-width=".3"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2017</div>
+          <div class="wcard-title">Tetov<em>Art</em></div>
+          <div class="wcard-sub">Tetovo, MK</div>
+          <div class="wcard-tags"><span class="wtag">Interior</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#181a10,#0c0d08)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <line x1="200" y1="20" x2="200" y2="280" stroke="#fff" stroke-width=".5"/>
+            <line x1="20" y1="150" x2="380" y2="150" stroke="#fff" stroke-width=".5"/>
+            <rect x="110" y="60" width="80" height="80" fill="none" stroke="#fff" stroke-width=".5"/>
+            <rect x="210" y="160" width="80" height="80" fill="none" stroke="#fff" stroke-width=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2016</div>
+          <div class="wcard-title">Golden <em>Ratio</em></div>
+          <div class="wcard-sub">Pirok</div>
+          <div class="wcard-tags"><span class="wtag">Interior</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#101418,#080a0c)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="30" width="160" height="240" fill="none" stroke="#fff" stroke-width=".6"/>
+            <rect x="210" y="100" width="160" height="170" fill="none" stroke="#fff" stroke-width=".6"/>
+            <line x1="190" y1="150" x2="210" y2="150" stroke="#fff" stroke-width=".4"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2014</div>
+          <div class="wcard-title">The <em>Corner</em></div>
+          <div class="wcard-sub">Tetovo, MK</div>
+          <div class="wcard-tags"><span class="wtag">Interior</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#111,#080808)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="60" width="340" height="180" fill="none" stroke="#fff" stroke-width=".6"/>
+            <rect x="50" y="80" width="140" height="160" fill="rgba(255,255,255,.06)" stroke="#fff" stroke-width=".4"/>
+            <rect x="210" y="80" width="140" height="160" fill="rgba(0,0,0,.2)" stroke="#fff" stroke-width=".4"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2013 – 2015</div>
+          <div class="wcard-title" data-i18n="bw_title">Black <em>And White</em></div>
+          <div class="wcard-sub">Bogovinje, MK</div>
+          <div class="wcard-tags"><span class="wtag">Interior</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LANDSCAPE -->
+  <div class="cat-section" id="cat-land">
+    <div class="cat-header rev">
+      <h2 class="cat-title" data-i18n="cat_lan">Landscape <em>Design</em></h2>
+      <span class="cat-count">05 <span data-i18n="works_lbl">works</span></span>
+    </div>
+    <div class="works-grid rev" style="animation-delay:.1s">
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#0d1a10,#080c09)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,180 Q100,140 200,180 Q300,220 400,180" fill="none" stroke="#fff" stroke-width="1.2"/>
+            <path d="M0,200 Q100,160 200,200 Q300,240 400,200" fill="none" stroke="#fff" stroke-width=".4" opacity=".5"/>
+            <circle cx="120" cy="120" r="35" fill="none" stroke="#fff" stroke-width=".5"/>
+            <circle cx="280" cy="100" r="25" fill="none" stroke="#fff" stroke-width=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2023</div>
+          <div class="wcard-title" data-i18n="pk_title">Park Along <em>the River</em></div>
+          <div class="wcard-sub">Kamjan</div>
+          <div class="wcard-tags"><span class="wtag">Landscape</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#101a18,#080c0a)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <path d="M80,60 Q120,180 80,260" fill="none" stroke="#fff" stroke-width=".7"/>
+            <path d="M160,40 Q200,180 160,260" fill="none" stroke="#fff" stroke-width=".7"/>
+            <path d="M240,50 Q280,180 240,260" fill="none" stroke="#fff" stroke-width=".7"/>
+            <line x1="0" y1="260" x2="400" y2="260" stroke="#fff" stroke-width=".4"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2022</div>
+          <div class="wcard-title" data-i18n="wf_title">Waterfall <em>6 7 8</em></div>
+          <div class="wcard-sub">Kamjan</div>
+          <div class="wcard-tags"><span class="wtag">Landscape</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#121a0e,#090c08)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="80" width="320" height="140" fill="none" stroke="#fff" stroke-width=".6"/>
+            <circle cx="200" cy="150" r="45" fill="none" stroke="#fff" stroke-width=".5"/>
+            <path d="M40,230 Q200,260 360,230" fill="none" stroke="#fff" stroke-width=".4"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2021</div>
+          <div class="wcard-title" data-i18n="bio_title">Bio Market <em>and Park</em></div>
+          <div class="wcard-sub">Kamjan</div>
+          <div class="wcard-tags"><span class="wtag">Landscape</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#0e1a12,#080c09)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="200" cy="150" r="140" rx="160" fill="none" stroke="#fff" stroke-width=".6"/>
+            <ellipse cx="200" cy="150" rx="80" ry="70" fill="none" stroke="#fff" stroke-width=".4"/>
+            <path d="M60,150 Q130,100 200,150 Q270,200 340,150" fill="none" stroke="#fff" stroke-width=".3" opacity=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2020</div>
+          <div class="wcard-title" data-i18n="dush_title">Park <em>Dushku</em></div>
+          <div class="wcard-sub">Kamjan</div>
+          <div class="wcard-tags"><span class="wtag">Landscape</span><span class="wtag">Concept</span></div>
+        </div>
+      </div>
+
+      <div class="wcard">
+        <div class="wcard-visual" style="background:linear-gradient(135deg,#101814,#080c09)">
+          <svg class="wcard-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <path d="M200,40 Q360,150 200,260 Q40,150 200,40Z" fill="none" stroke="#fff" stroke-width=".6"/>
+            <line x1="200" y1="40" x2="200" y2="260" stroke="#fff" stroke-width=".3" opacity=".5"/>
+          </svg>
+          <div class="wcard-overlay"></div>
+        </div>
+        <div class="wcard-body">
+          <div class="wcard-year">2014</div>
+          <div class="wcard-title" data-i18n="bro_title">Brother's <em>Garden</em></div>
+          <div class="wcard-sub">Negotino, Tetovo</div>
+          <div class="wcard-tags"><span class="wtag">Landscape</span><span class="wtag">Completed</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="cat-section" id="cat-res">
+    <div class="cat-header rev">
+      <h2 class="cat-title" data-i18n="cat_res"><em>Research</em> &amp; Theory</h2>
+      <span class="cat-count">03 <span data-i18n="works_lbl">works</span></span>
+    </div>
+    <div class="research-list rev" style="animation-delay:.1s">
+
+      <div class="ritem">
+        <div class="ritem-left">
+          <span class="ritem-year">2014</span>
+          <div>
+            <div class="ritem-title" data-i18n="post_title">Architecture Theory — Tetovo's Post</div>
+            <div class="ritem-sub">Tetovo, MK</div>
+          </div>
+        </div>
+        <span class="ritem-tag" data-i18n="res_lbl">Research</span>
+      </div>
+
+      <div class="ritem">
+        <div class="ritem-left">
+          <span class="ritem-year">2014</span>
+          <div>
+            <div class="ritem-title" data-i18n="rev_title">Revitalisation and Adaptation</div>
+            <div class="ritem-sub">North Macedonia</div>
+          </div>
+        </div>
+        <span class="ritem-tag" data-i18n="res_lbl">Research</span>
+      </div>
+
+      <div class="ritem">
+        <div class="ritem-left">
+          <span class="ritem-year">2011</span>
+          <div>
+            <div class="ritem-title" data-i18n="han_title">Handicap Access in Public Buildings — Tetovo</div>
+            <div class="ritem-sub">Tetovo, NMK</div>
+          </div>
+        </div>
+        <span class="ritem-tag" data-i18n="res_lbl">Research</span>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /works-content -->
+
+<footer>
+  <span class="fc">© 2025 Valon Aliti · Architect · Düsseldorf</span>
+  <div class="fl">
+    <a href="https://www.linkedin.com/in/valonaliti" target="_blank">LinkedIn</a>
+    <a href="https://instagram.com/avarchitect" target="_blank">Instagram</a>
+    <a href="mailto:info@avarch.de">Email</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+var cr=document.getElementById('cr'),crr=document.getElementById('crr'),mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cr.style.left=mx+'px';cr.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;crr.style.left=rx+'px';crr.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('.wcard,a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cr.style.transform='translate(-50%,-50%) scale(2)';crr.style.width='40px';crr.style.height='40px';});
+  el.addEventListener('mouseleave',function(){cr.style.transform='translate(-50%,-50%) scale(1)';crr.style.width='24px';crr.style.height='24px';});
+});
+
+// FILTER
+function filter(cat){
+  // Update tabs
+  document.querySelectorAll('.ftab').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+  // Show/hide sections
+  var all = cat==='all';
+  document.getElementById('cat-design').classList.toggle('hidden', !all && cat!=='design');
+  document.getElementById('cat-int').classList.toggle('hidden',   !all && cat!=='int');
+  document.getElementById('cat-land').classList.toggle('hidden',  !all && cat!=='land');
+  document.getElementById('cat-res').classList.toggle('hidden',   !all && cat!=='res');
+}
+
+// TRANSLATIONS
+var T={
+en:{nav_about:'About',nav_works:'Works',nav_timeline:'Timeline',nav_contact:'Contact',w_eye:'Architecture · Interior · Landscape · Research',w_title:'Selected Works',w_sub:'Projects and research spanning architecture, interior design, landscape, and academic study — from Düsseldorf to North Macedonia.',f_all:'All',f_des:'Design & Studies',f_int:'Interior',f_lan:'Landscape',f_res:'Research',cat_des:'Design & Studies',cat_int:'Interior Design',cat_lan:'Landscape Design',cat_res:'Research & Theory',works_lbl:'works',bg_title:'Neuer Sportkomplex Bergisch Gladbach',hb_title:'Hallenbad Leichlingen',ap_title:'Airport on Military Site',ap_sub:'Master Thesis · Tetovo–Gostivar, MK',vel_title:'Verkehrsstation Veles',vel_sub:'Studio 9 · Master Studies · Veles, MK',win_title:'Weingut Winery',win_sub:'Studio 7 · Industrial · Skopje, MK',fs_title:'Fire Station',fs_sub:'Bachelor Thesis · Kamenjane, MK',table_title:"Architect's Table",s1_title:'Studio 1 — Housing',s1_sub:'Bachelor Studio · Tetovo, MK',bw_title:'Black And White',pk_title:'Park Along the River',wf_title:'Waterfall 6 7 8',bio_title:'Bio Market and Park',dush_title:'Park Dushku',bro_title:"Brother's Garden",post_title:"Architecture Theory — Tetovo's Post",rev_title:'Revitalisation and Adaptation',han_title:'Handicap Access in Public Buildings — Tetovo',res_lbl:'Research'},
+de:{nav_about:'Über mich',nav_works:'Arbeiten',nav_timeline:'Zeitleiste',nav_contact:'Kontakt',w_eye:'Architektur · Innenarchitektur · Landschaft · Forschung',w_title:'Ausgewählte Arbeiten',w_sub:'Projekte und Forschung in den Bereichen Architektur, Innenarchitektur, Landschaft und Studium — von Düsseldorf bis Nordmazedonien.',f_all:'Alle',f_des:'Entwurf & Studium',f_int:'Innenarchitektur',f_lan:'Landschaft',f_res:'Forschung',cat_des:'Entwurf & Studium',cat_int:'Innenarchitektur',cat_lan:'Landschaftsgestaltung',cat_res:'Forschung & Theorie',works_lbl:'Projekte',bg_title:'Neuer Sportkomplex Bergisch Gladbach',bg_title:'Neuer Sportkomplex Bergisch Gladbach',hb_title:'Hallenbad Leichlingen',ap_title:'Flughafen auf Militärgelände',ap_sub:'Masterarbeit · Tetovo–Gostivar, MK',vel_title:'Verkehrsstation Veles',vel_sub:'Studio 9 · Masterstudium · Veles, MK',win_title:'Weingut',win_sub:'Studio 7 · Industriebau · Skopje, MK',fs_title:'Feuerwehrstation',fs_sub:'Bachelorarbeit · Kamenjane, MK',table_title:'Architektentisch',s1_title:'Studio 1 — Wohnungsbau',s1_sub:'Bachelor Studio · Tetovo, MK',bw_title:'Schwarz und Weiß',pk_title:'Park am Fluss',wf_title:'Wasserfall 6 7 8',bio_title:'Biomarkt und Park',dush_title:'Park Dushku',bro_title:'Garten des Bruders',post_title:'Architekturtheorie — Tetovos Post',rev_title:'Revitalisierung und Anpassung',han_title:'Barrierefreier Zugang — Tetovo',res_lbl:'Forschung'},
+al:{nav_about:'Rreth meje',nav_works:'Punime',nav_timeline:'Kronologji',nav_contact:'Kontakt',w_eye:'Arkitekturë · Interior · Landskap · Kërkim',w_title:'Punime të Zgjedhura',w_sub:'Projekte dhe kërkime në arkitekturë, dizajn interior, landskap dhe studime akademike.',f_all:'Të gjitha',f_des:'Dizajn & Studime',f_int:'Interior',f_lan:'Landskap',f_res:'Kërkim',cat_des:'Dizajn & Studime',cat_int:'Dizajn Interior',cat_lan:'Dizajn Landskap',cat_res:'Kërkim & Teori',works_lbl:'punime',bg_title:'Kompleks i ri Sportiv Bergisch Gladbach',hb_title:'Pishinë e mbyllur Leichlingen',ap_title:'Aeroport në Fushë Ushtarake',ap_sub:'Diplomë Master · Tetovë–Gostivar, MK',vel_title:'Stacioni i Transportit Veles',vel_sub:'Studio 9 · Studimet Master · Veles, MK',win_title:'Kantinë Winery',win_sub:'Studio 7 · Industrial · Skopje, MK',fs_title:'Stacioni i Zjarrfikësve',fs_sub:'Diplomë Bachelor · Kamenjane, MK',table_title:'Tavolina e Arkitektit',s1_title:'Studio 1 — Banim',s1_sub:'Bachelor Studio · Tetovë, MK',bw_title:'E zeza dhe e bardha',pk_title:'Park Gjatë Lumit',wf_title:'Ujëvara 6 7 8',bio_title:'Treg Bio dhe Park',dush_title:'Park Dushku',bro_title:'Kopshti i Vëllait',post_title:'Teoria e Arkitekturës — Posta e Tetovës',rev_title:'Revitalizim dhe Përshtatje',han_title:'Qasja për Personat me Aftësi të Kufizuara — Tetovë',res_lbl:'Kërkim'},
+mk:{nav_about:'За мене',nav_works:'Трудови',nav_timeline:'Хронологија',nav_contact:'Контакт',w_eye:'Архитектура · Ентериер · Пејзаж · Истражување',w_title:'Избрани Трудови',w_sub:'Проекти и истражувања во областа на архитектура, ентериер, пејзаж и академски студии.',f_all:'Сите',f_des:'Дизајн & Студии',f_int:'Ентериер',f_lan:'Пејзаж',f_res:'Истражување',cat_des:'Дизајн & Студии',cat_int:'Ентериер Дизајн',cat_lan:'Пејзажен Дизајн',cat_res:'Истражување & Теорија',works_lbl:'трудови',bg_title:'Нов Спортски Комплекс Бергиш Гладбах',hb_title:'Затворен Базен Лајхлинген',ap_title:'Аеродром на Воено Земјиште',ap_sub:'Магистерска Работа · Тетово–Гостивар, МК',vel_title:'Сообраќајна Станица Велес',vel_sub:'Студио 9 · Мастер Студии · Велес, МК',win_title:'Винарница',win_sub:'Студио 7 · Индустриска · Скопје, МК',fs_title:'Противпожарна Станица',fs_sub:'Дипломска Работа · Камењане, МК',table_title:'Маса на Архитектот',s1_title:'Студио 1 — Домување',s1_sub:'Дипломско Студио · Тетово, МК',bw_title:'Црно и Бело',pk_title:'Парк Покрај Реката',wf_title:'Водопад 6 7 8',bio_title:'Биопазар и Парк',dush_title:'Парк Душку',bro_title:'Градина на Братот',post_title:'Теорија на Архитектура — Пошта на Тетово',rev_title:'Ревитализација и Адаптација',han_title:'Пристап за Лица со Хендикеп — Тетово',res_lbl:'Истражување'}
+};
+function setLang(l){
+  document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on');});
+  var btn=document.querySelector('.lb[onclick="setLang(\''+l+'\')"]');
+  if(btn)btn.classList.add('on');
+  var t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    if(t&&t[k]!==undefined)el.textContent=t[k];
+  });
+}
+</script>
+</body>
+</html>

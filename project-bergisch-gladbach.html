@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Sportkomplex Bergisch Gladbach · Valon Aliti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--bg2:#0f0f0f;--w:#fff;--mid:rgba(255,255,255,.6);--muted:rgba(255,255,255,.35);--line:rgba(255,255,255,.08);--serif:'Cormorant Garamond',serif;--mono:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:var(--serif);overflow-x:hidden;cursor:none;}
+#cr{position:fixed;width:6px;height:6px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#crr{position:fixed;width:24px;height:24px;border:1px solid rgba(255,255,255,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 4rem;background:rgba(8,8,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.nav-back{display:flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.2em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;}
+.nav-back:hover{color:#fff;}
+.nav-logo{font-family:var(--serif);font-size:.95rem;font-weight:300;font-style:italic;color:#fff;text-decoration:none;}
+.nav-lang{display:flex;gap:.5rem;}
+.lb{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--muted);background:none;border:none;cursor:none;text-transform:uppercase;transition:color .2s;padding:.15rem .3rem;}
+.lb.on,.lb:hover{color:#fff;}
+#hero{position:relative;height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 8vw 10vh;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#1a2a1a,#080c08);}
+.hero-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.14;}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.96) 0%,rgba(8,8,8,.25) 55%,rgba(8,8,8,.5) 100%);}
+.hc{position:relative;z-index:2;}
+.hlbl{font-family:var(--mono);font-size:.56rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:1.3rem;animation:up .9s .2s both;}
+.htitle{font-size:clamp(2.5rem,6vw,6rem);font-weight:300;line-height:.92;color:#fff;animation:up .9s .35s both;}
+.htitle em{font-style:italic;color:var(--mid);}
+.hmeta{display:flex;flex-wrap:wrap;gap:2.5rem;margin-top:2.2rem;animation:up .9s .5s both;}
+.hm-lbl{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:.25rem;}
+.hm-val{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.8);}
+.award-badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.3);padding:.4rem .9rem;text-transform:uppercase;margin-top:1.8rem;animation:up .9s .65s both;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 8vw;}
+.sec-lbl{font-family:var(--mono);font-size:.54rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;}
+.sec-lbl::after{content:'';flex:0 0 40px;height:1px;background:var(--line);}
+.intro{padding:8vw 0 6vw;display:grid;grid-template-columns:1fr 1.5fr;gap:8vw;border-bottom:1px solid var(--line);}
+.intro-sum{font-size:clamp(1.3rem,2.3vw,1.85rem);font-weight:300;line-height:1.45;color:rgba(255,255,255,.85);}
+.intro-sum em{font-style:italic;color:var(--mid);}
+.intro-body{font-size:1rem;font-weight:300;line-height:1.85;color:var(--mid);margin-bottom:1.3rem;}
+.facts{padding:6vw 0;border-bottom:1px solid var(--line);}
+.facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-top:3rem;}
+.fact{padding:1.8rem 1.5rem;background:var(--bg);}
+.fact-val{font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:300;line-height:1;margin-bottom:.4rem;}
+.fact-val em{font-style:italic;color:var(--mid);}
+.fact-lbl{font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;line-height:1.5;}
+.features{padding:6vw 0;border-bottom:1px solid var(--line);}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-top:3rem;}
+.feat{padding:2.2rem 2rem;background:var(--bg);}
+.feat-icon{font-size:1.4rem;margin-bottom:1rem;opacity:.6;}
+.feat-title{font-size:1.1rem;font-weight:300;color:#fff;margin-bottom:.8rem;line-height:1.2;}
+.feat-title em{font-style:italic;color:var(--mid);}
+.feat-body{font-size:.9rem;font-weight:300;line-height:1.8;color:var(--mid);}
+.bim-section{padding:6vw 0;border-bottom:1px solid var(--line);}
+.bim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:3rem;}
+.bim-item{padding:1.8rem 1.5rem;background:var(--bg);}
+.bim-item-title{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.6rem;border-bottom:1px solid var(--line);}
+.bim-item-body{font-size:.9rem;font-weight:300;line-height:1.8;color:var(--mid);}
+.award-section{padding:6vw 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 2fr;gap:6vw;align-items:center;}
+.award-big{font-size:clamp(2rem,4vw,4rem);font-weight:300;color:#fff;line-height:1.05;}
+.award-big em{font-style:italic;color:var(--mid);}
+.award-body{font-size:1rem;font-weight:300;line-height:1.85;color:var(--mid);}
+.proj-nav{padding:5vw 0;display:flex;justify-content:space-between;align-items:center;}
+.pn-link{display:flex;flex-direction:column;gap:.4rem;text-decoration:none;color:#fff;transition:opacity .25s;max-width:260px;}
+.pn-link:hover{opacity:.6;}
+.pn-lbl{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+.pn-title{font-size:1rem;font-weight:300;}
+.pn-sep{width:1px;height:50px;background:var(--line);}
+footer{padding:2rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+.fc{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;}
+.fl{display:flex;gap:1.5rem;}
+.fl a{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;color:rgba(255,255,255,.22);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;}
+.fl a:hover{color:#fff;}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.rev{animation:up .8s cubic-bezier(.16,1,.3,1) both;}
+@media(max-width:900px){
+  #nav{padding:1.1rem 1.5rem;}
+  .intro{grid-template-columns:1fr;gap:2.5rem;}
+  .facts-grid{grid-template-columns:repeat(2,1fr);}
+  .features-grid{grid-template-columns:1fr;}
+  .bim-grid{grid-template-columns:1fr;}
+  .award-section{grid-template-columns:1fr;}
+  .proj-nav{flex-direction:column;gap:2rem;align-items:flex-start;}
+  .pn-sep{display:none;}
+  footer{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="cr"></div><div id="crr"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-back">← <span data-i18n="back">Back</span></a>
+  <a href="index.html" class="nav-logo">V.A.</a>
+  <div class="nav-lang">
+    <button class="lb on" onclick="setLang('en')">EN</button>
+    <button class="lb" onclick="setLang('de')">DE</button>
+    <button class="lb" onclick="setLang('al')">AL</button>
+    <button class="lb" onclick="setLang('mk')">MK</button>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <svg class="hero-svg" viewBox="0 0 1400 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect x="100" y="200" width="1200" height="400" fill="none" stroke="#fff" stroke-width=".8"/>
+    <rect x="100" y="200" width="600" height="400" fill="none" stroke="#fff" stroke-width=".4"/>
+    <line x1="100" y1="200" x2="100" y2="100" stroke="#fff" stroke-width=".5"/>
+    <line x1="1300" y1="200" x2="1300" y2="140" stroke="#fff" stroke-width=".5"/>
+    <path d="M100,100 Q700,50 1300,140" fill="none" stroke="#fff" stroke-width=".6"/>
+    <rect x="680" y="280" width="200" height="180" fill="none" stroke="#fff" stroke-width=".5"/>
+    <line x1="0" y1="600" x2="1400" y2="600" stroke="#fff" stroke-width=".3"/>
+    <line x1="200" y1="600" x2="200" y2="200" stroke="#fff" stroke-width=".2" opacity=".4"/>
+    <line x1="400" y1="600" x2="400" y2="200" stroke="#fff" stroke-width=".2" opacity=".4"/>
+    <line x1="700" y1="600" x2="700" y2="200" stroke="#fff" stroke-width=".2" opacity=".4"/>
+    <line x1="1000" y1="600" x2="1000" y2="200" stroke="#fff" stroke-width=".2" opacity=".4"/>
+  </svg>
+  <div class="hero-ov"></div>
+  <div class="hc">
+    <p class="hlbl">POS4 Architekten · <span data-i18n="h_type">Sport Complex · BIM · Timber · 2024–2025</span></p>
+    <h1 class="htitle">Neuer Sportkomplex<br><em>Bergisch Gladbach</em></h1>
+    <div class="hmeta">
+      <div><div class="hm-lbl" data-i18n="m_loc">Location</div><div class="hm-val">Bergisch Gladbach-Refrath, DE</div></div>
+      <div><div class="hm-lbl" data-i18n="m_comp">Completion</div><div class="hm-val" data-i18n="m_comp_v">June 2025</div></div>
+      <div><div class="hm-lbl" data-i18n="m_build">Build Time</div><div class="hm-val" data-i18n="m_build_v">13 months</div></div>
+      <div><div class="hm-lbl" data-i18n="m_role">My Role</div><div class="hm-val">BIM Author · LP 1–5</div></div>
+    </div>
+    <div class="award-badge">🏆 <span data-i18n="award_short">BIM Champions Award 2025 Finalist · Sustainability</span></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <div class="intro rev">
+    <div>
+      <div class="sec-lbl" data-i18n="ov_lbl">Overview</div>
+      <p class="intro-sum" data-i18n="intro_s">A <em>pioneering community hub</em> in Bergisch Gladbach — integrating a 25-meter swimming facility with a high-performance sports hall in a sustainable timber structure.</p>
+    </div>
+    <div>
+      <p class="intro-body" data-i18n="intro_b1">Located in the Refrath district, this sport complex integrates a modern 25-meter swimming facility with a single-field sports hall. The project is defined by its commitment to sustainable materials — a load-bearing structure almost entirely of cross-laminated (CLT) and glued-laminated timber, with a warm larch-wood façade as the building's visible identity.</p>
+      <p class="intro-body" data-i18n="intro_b2">Planned and executed entirely using BIM, the project achieved a high degree of prefabrication — allowing the building shell to be erected in just a few weeks. The compact footprint preserves a valuable stand of old-growth trees on the site. A distinctive roof landscape seamlessly integrates the 1.5-meter height difference between the two halls.</p>
+    </div>
+  </div>
+
+  <div class="facts rev" style="animation-delay:.1s">
+    <div class="sec-lbl" data-i18n="facts_lbl">Key Project Data</div>
+    <div class="facts-grid">
+      <div class="fact"><div class="fact-val"><em>25m</em></div><div class="fact-lbl" data-i18n="f1">Stainless Steel Pool · 4 Lanes · Lifting Floor</div></div>
+      <div class="fact"><div class="fact-val"><em>13</em></div><div class="fact-lbl" data-i18n="f2">Months Construction Time</div></div>
+      <div class="fact"><div class="fact-val"><em>CLT</em></div><div class="fact-lbl" data-i18n="f3">Cross-Laminated Timber · Fossil-Free Energy</div></div>
+      <div class="fact"><div class="fact-val"><em>2025</em></div><div class="fact-lbl" data-i18n="f4">Completion · BIM Champions Finalist</div></div>
+    </div>
+  </div>
+
+  <div class="features rev" style="animation-delay:.15s">
+    <div class="sec-lbl" data-i18n="feat_lbl">Architectural Concept</div>
+    <div class="features-grid">
+      <div class="feat">
+        <div class="feat-icon">🌳</div>
+        <div class="feat-title" data-i18n="f_compact_t">Compact &amp; <em>Harmonious</em></div>
+        <div class="feat-body" data-i18n="f_compact_b">The design uses a compact footprint to preserve a valuable stand of old-growth trees on the site. The layout responds directly to the existing natural context.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🏔</div>
+        <div class="feat-title" data-i18n="f_roof_t">Dynamic <em>Roof Landscape</em></div>
+        <div class="feat-body" data-i18n="f_roof_b">A distinctive roof landscape seamlessly integrates the 1.5-meter height difference between the swimming and sports halls — creating a unified architectural silhouette.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">☀</div>
+        <div class="feat-title" data-i18n="f_energy_t">Fossil-Free <em>Energy Concept</em></div>
+        <div class="feat-body" data-i18n="f_energy_b">Entirely free of fossil fuels. Powered by a large-scale photovoltaic system on the green roof and a high-efficiency air-water heat pump.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">♿</div>
+        <div class="feat-title" data-i18n="f_access_t">Fully <em>Inclusive Design</em></div>
+        <div class="feat-body" data-i18n="f_access_b">Barrier-free accessibility implemented throughout — including tactile guidance systems for the visually impaired and specialised pool entry systems.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bim-section rev" style="animation-delay:.2s">
+    <div class="sec-lbl" data-i18n="bim_lbl">My BIM Contribution</div>
+    <div class="bim-grid">
+      <div class="bim-item">
+        <div class="bim-item-title" data-i18n="bim1_t">Cross-Disciplinary BIM Coordination</div>
+        <div class="bim-item-body" data-i18n="bim1_b">Led BIM coordination across Architecture, TGA (building services), and Statics — managing model integration to achieve a collision-free construction process. Critical for the high degree of prefabrication required by the timber structure.</div>
+      </div>
+      <div class="bim-item">
+        <div class="bim-item-title" data-i18n="bim2_t">Timber &amp; CLT Construction</div>
+        <div class="bim-item-body" data-i18n="bim2_b">Coordinated wall timber elements and the massive CLT structure. Directed all constructive joints within the model to facilitate seamless on-site assembly — allowing the shell to be erected in just a few weeks.</div>
+      </div>
+      <div class="bim-item">
+        <div class="bim-item-title" data-i18n="bim3_t">Façade &amp; Technical Interfaces</div>
+        <div class="bim-item-body" data-i18n="bim3_b">Detailed execution of the sustainable larch-wood façade (Boden-Deckel-Schalung) and integrated curtain wall systems. Managed critical connection points: Sockel elements, door/window integrations, and roof consoles.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="award-section rev" style="animation-delay:.25s">
+    <div>
+      <div class="sec-lbl" data-i18n="award_lbl">Recognition</div>
+      <h3 class="award-big">BIM Champions<br><em>Award 2025</em></h3>
+    </div>
+    <div>
+      <p class="award-body" data-i18n="award_b">The project was nominated as a finalist for the BIM Champions Award 2025 in the Sustainability category. This recognition reflects the project's pioneering approach to digital planning — combining BIM-driven coordination, fossil-free energy systems, and sustainable timber construction to set a new benchmark for public sport facilities in Germany.</p>
+    </div>
+  </div>
+
+  <div class="proj-nav rev" style="animation-delay:.3s">
+    <a href="index.html" class="pn-link">
+      <span class="pn-lbl" data-i18n="back_lbl">← Portfolio</span>
+      <span class="pn-title" data-i18n="back_title">All Projects</span>
+    </a>
+    <div class="pn-sep"></div>
+    <a href="project-hallenbad.html" class="pn-link" style="text-align:right">
+      <span class="pn-lbl" data-i18n="next_lbl">Next Project →</span>
+      <span class="pn-title" data-i18n="next_title">Hallenbad Leichlingen</span>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="fc">© 2025 Valon Aliti · Architect · Düsseldorf</span>
+  <div class="fl">
+    <a href="https://www.linkedin.com/in/valonaliti" target="_blank">LinkedIn</a>
+    <a href="https://instagram.com/avarchitect" target="_blank">Instagram</a>
+    <a href="mailto:info@avarch.de">Email</a>
+  </div>
+</footer>
+
+<script>
+var cr=document.getElementById('cr'),crr=document.getElementById('crr'),mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cr.style.left=mx+'px';cr.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;crr.style.left=rx+'px';crr.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+var T={
+en:{back:'Back',h_type:'Sport Complex · BIM · Timber · 2024–2025',m_loc:'Location',m_comp:'Completion',m_comp_v:'June 2025',m_build:'Build Time',m_build_v:'13 months',m_role:'My Role',award_short:'BIM Champions Award 2025 Finalist · Sustainability',ov_lbl:'Overview',intro_s:'A pioneering community hub in Bergisch Gladbach — integrating a 25-meter swimming facility with a high-performance sports hall in a sustainable timber structure.',intro_b1:'Located in the Refrath district, this sport complex integrates a modern 25-meter swimming facility with a single-field sports hall. The project is defined by its commitment to sustainable materials — CLT and glued-laminated timber, with a warm larch-wood façade.',intro_b2:'Planned entirely using BIM, the project achieved a high degree of prefabrication — allowing the building shell to be erected in just a few weeks. A distinctive roof landscape integrates the 1.5-meter height difference between the two halls.',facts_lbl:'Key Project Data',f1:'Stainless Steel Pool · 4 Lanes · Lifting Floor',f2:'Months Construction Time',f3:'Cross-Laminated Timber · Fossil-Free Energy',f4:'Completion · BIM Champions Finalist',feat_lbl:'Architectural Concept',f_compact_t:'Compact & Harmonious',f_compact_b:'The design uses a compact footprint to preserve a valuable stand of old-growth trees on the site.',f_roof_t:'Dynamic Roof Landscape',f_roof_b:'A distinctive roof landscape seamlessly integrates the 1.5-meter height difference between the swimming and sports halls.',f_energy_t:'Fossil-Free Energy Concept',f_energy_b:'Entirely free of fossil fuels — photovoltaic system on the green roof and a high-efficiency air-water heat pump.',f_access_t:'Fully Inclusive Design',f_access_b:'Barrier-free accessibility throughout — tactile guidance systems and specialised pool entry systems.',bim_lbl:'My BIM Contribution',bim1_t:'Cross-Disciplinary BIM Coordination',bim1_b:'Led BIM coordination across Architecture, TGA, and Statics — collision-free model integration critical for the timber prefabrication.',bim2_t:'Timber & CLT Construction',bim2_b:'Coordinated wall timber elements and CLT structure. Directed all constructive joints to allow the shell to be erected in just a few weeks.',bim3_t:'Façade & Technical Interfaces',bim3_b:'Detailed the larch-wood façade (Boden-Deckel-Schalung) and curtain wall systems. Managed Sockel connections, door/window integrations, and roof consoles.',award_lbl:'Recognition',award_b:'Nominated finalist for the BIM Champions Award 2025 in the Sustainability category — reflecting the project\'s pioneering digital planning approach.',back_lbl:'← Portfolio',back_title:'All Projects',next_lbl:'Next Project →',next_title:'Hallenbad Leichlingen'},
+de:{back:'Zurück',h_type:'Sportkomplex · BIM · Holzbau · 2024–2025',m_loc:'Standort',m_comp:'Fertigstellung',m_comp_v:'Juni 2025',m_build:'Bauzeit',m_build_v:'13 Monate',m_role:'Meine Rolle',award_short:'BIM Champions Award 2025 Finalist · Nachhaltigkeit',ov_lbl:'Überblick',intro_s:'Ein wegweisendes Gemeinschaftsprojekt in Bergisch Gladbach — mit 25-Meter-Schwimmhalle und Sporthalle in nachhaltiger Holzbauweise.',intro_b1:'Im Stadtteil Refrath verbindet dieser Sportkomplex eine moderne 25-Meter-Schwimmhalle mit einer Einfeldsporthalle. Das Projekt steht für nachhaltiges Bauen mit Brettsperrholz (CLT) und Brettschichtholz sowie einer Lärchenfassade.',intro_b2:'Vollständig mit BIM geplant, ermöglichte das Projekt einen hohen Vorfertigungsgrad — der Rohbau konnte in wenigen Wochen errichtet werden. Eine markante Dachlandschaft integriert den 1,5-Meter-Höhenunterschied zwischen Schwimm- und Sporthalle.',facts_lbl:'Projektdaten',f1:'Edelstahlbecken · 4 Bahnen · Hubboden',f2:'Monate Bauzeit',f3:'Brettsperrholz · Fossile Energie-frei',f4:'Fertigstellung · BIM Champions Finalist',feat_lbl:'Architektonisches Konzept',f_compact_t:'Kompakt & Harmonisch',f_compact_b:'Das Konzept nutzt einen kompakten Grundriss, um den wertvollen Altbaumbestand auf dem Grundstück zu erhalten.',f_roof_t:'Dynamische Dachlandschaft',f_roof_b:'Eine markante Dachlandschaft integriert nahtlos den 1,5-Meter-Höhenunterschied zwischen Schwimm- und Sporthalle.',f_energy_t:'Fossile-Energie-freies Konzept',f_energy_b:'Vollständig ohne fossile Brennstoffe — Photovoltaikanlage auf dem Gründach und eine hocheffiziente Luft-Wasser-Wärmepumpe.',f_access_t:'Barrierefreies Design',f_access_b:'Konsequent barrierefrei — taktile Leitsysteme für Sehbehinderte und spezielle Einstiegssysteme für den Pool.',bim_lbl:'Mein BIM-Beitrag',bim1_t:'Interdisziplinäre BIM-Koordination',bim1_b:'BIM-Koordination über Architektur, TGA und Statik — kollisionsfreie Modellintegration als Grundlage für die hohe Vorfertigung.',bim2_t:'Holz- & CLT-Konstruktion',bim2_b:'Koordination der Holzwandelemente und der massiven Brettsperrholzkonstruktion. Steuerung aller Konstruktionsdetails für die reibungslose Montage.',bim3_t:'Fassade & Technische Schnittstellen',bim3_b:'Ausführungsplanung der Lärchen-Boden-Deckel-Schalung und Vorhangfassade. Verwaltung von Sockelanschlüssen, Tür-/Fenstereinbauten und Dachkonsolen.',award_lbl:'Auszeichnung',award_b:'Finalist für den BIM Champions Award 2025 in der Kategorie Nachhaltigkeit — Anerkennung für den wegweisenden Einsatz digitaler Planung.',back_lbl:'← Portfolio',back_title:'Alle Projekte',next_lbl:'Nächstes Projekt →',next_title:'Hallenbad Leichlingen'},
+al:{back:'Kthehu',h_type:'Kompleks Sportiv · BIM · Ndërtim Druri · 2024–2025',m_loc:'Vendndodhja',m_comp:'Përfundimi',m_comp_v:'Qershor 2025',m_build:'Koha e Ndërtimit',m_build_v:'13 muaj',m_role:'Roli im',award_short:'Finalist BIM Champions Award 2025 · Qëndrueshmëri',ov_lbl:'Pasqyrë',intro_s:'Një qendër komunitare pioniere në Bergisch Gladbach — me pishinë 25 metrash dhe sallë sportive në konstruksion të qëndrueshëm druri.',intro_b1:'Ky kompleks sportiv integron një pishinë moderne 25 metrash me një sallë sportive. Projekti karakterizohet nga materiale të qëndrueshme — CLT dhe dru i ngjituar, me fasadë lëvozhge liri.',intro_b2:'Planifikuar plotësisht me BIM, projekti arriti një shkallë të lartë paraprodhimi — lejando montimin e strukturës brenda pak javësh.',facts_lbl:'Të dhënat kryesore',f1:'Pishinë Çeliku · 4 Korsi · Dysheme Ngritëse',f2:'Muaj Kohë Ndërtimi',f3:'Dru CLT · Energji pa Fosile',f4:'Përfundimi · Finalist BIM Champions',feat_lbl:'Koncepti Arkitektonik',f_compact_t:'Kompakt & Harmonik',f_compact_b:'Dizajni ruan pemët e vjetra të vlefshme në sit duke përdorur hapësirë kompakte.',f_roof_t:'Peizazh Dinamik i Çatisë',f_roof_b:'Peizazhi i çatisë integron ndryshimin e lartësisë 1.5 metër midis pishinës dhe sallës sportive.',f_energy_t:'Energji pa Karbon',f_energy_b:'Plotësisht pa lëndë djegëse fosile — sistem fotovoltaik dhe pompë termike ajër-ujë.',f_access_t:'Dizajn Gjithëpërfshirës',f_access_b:'Aksesueshmëri pa barriera — sisteme udhëzuese taktile dhe sisteme hyrjeje të specializuara.',bim_lbl:'Kontributi im BIM',bim1_t:'Koordinim BIM Ndërdisiplinor',bim1_b:'Koordinim BIM ndër Arkitekturë, TGA dhe Statikë — integrim modelesh pa kolizion.',bim2_t:'Konstruksion Druri & CLT',bim2_b:'Koordinim i elementeve të mureve prej druri dhe strukturës CLT masive.',bim3_t:'Fasadë & Ndërfaqe Teknike',bim3_b:'Ekzekutimi i fasadës prej lirie dhe sistemeve të fasadës së varur. Menaxhimi i nyjeve konstruktive.',award_lbl:'Njohje',award_b:'Finalist për BIM Champions Award 2025 në kategorinë Qëndrueshmëri.',back_lbl:'← Portfolioja',back_title:'Të gjitha Projektet',next_lbl:'Projekti tjetër →',next_title:'Hallenbad Leichlingen'},
+mk:{back:'Назад',h_type:'Спортски Комплекс · BIM · Дрво · 2024–2025',m_loc:'Локација',m_comp:'Завршување',m_comp_v:'Јуни 2025',m_build:'Време на Градба',m_build_v:'13 месеци',m_role:'Моја улога',award_short:'Финалист BIM Champions Award 2025 · Одржливост',ov_lbl:'Преглед',intro_s:'Пионерски јавен центар во Бергиш Гладбах — со базен од 25 метри и спортска сала во одржлива дрвена конструкција.',intro_b1:'Овој спортски комплекс интегрира современ базен од 25 метри со спортска сала. Проектот е дефиниран со употреба на CLT и лепено-ламелирано дрво, со фасада од дрво лариса.',intro_b2:'Планиран целосно со BIM, проектот постигна висок степен на префабрикација — овозможувајќи монтажа на конструкцијата за неколку недели.',facts_lbl:'Клучни податоци',f1:'Базен од Нерѓосувачки Челик · 4 Пати · Лифт Под',f2:'Месеци Градба',f3:'CLT Дрво · Без Фосилна Енергија',f4:'Завршување · Финалист BIM Champions',feat_lbl:'Архитектонски Концепт',f_compact_t:'Компактно & Хармонично',f_compact_b:'Дизајнот го зачувува вредното старо дрвје на локацијата со компактна основа.',f_roof_t:'Динамичен Покривен Пејзаж',f_roof_b:'Покривниот пејзаж ја интегрира разликата во висина од 1,5 метри меѓу базенот и спортската сала.',f_energy_t:'Енергија без Фосили',f_energy_b:'Целосно без фосилни горива — фотоволтаичен систем и топлинска пумпа воздух-вода.',f_access_t:'Целосно Инклузивен Дизајн',f_access_b:'Бесприпречна пристапност — тактилни системи и специјализирани системи за влез во базенот.',bim_lbl:'Мој BIM Придонес',bim1_t:'Меѓудисциплинарна BIM Координација',bim1_b:'BIM координација меѓу Архитектура, TGA и Статика — интеграција на модели без колизии.',bim2_t:'Дрво & CLT Конструкција',bim2_b:'Координација на дрвени ѕидни елементи и масивна CLT конструкција.',bim3_t:'Фасада & Технички Интерфејси',bim3_b:'Извршна планирање на фасадата и системот на завесна фасада.',award_lbl:'Признание',award_b:'Финалист за BIM Champions Award 2025 во категоријата Одржливост.',back_lbl:'← Портфолио',back_title:'Сите Проекти',next_lbl:'Следен проект →',next_title:'Халенбад Лајхлинген'}
+};
+function setLang(l){
+  document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on');});
+  var btn=document.querySelector('.lb[onclick="setLang(\''+l+'\')"]');
+  if(btn)btn.classList.add('on');
+  var t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    if(t&&t[k]!==undefined)el.textContent=t[k];
+  });
+}
+</script>
+</body>
+</html>

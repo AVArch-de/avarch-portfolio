@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hallenbad Leichlingen — Valon Aliti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0a;
+  --chalk: #f2ede6;
+  --warm: #c8b89a;
+  --accent: #b07d4a;
+  --steel: #3a4a5c;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-mono: 'DM Mono', monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--ink); color:var(--chalk); font-family:var(--font-display); overflow-x:hidden; cursor:none; }
+
+/* CURSOR */
+#cursor { position:fixed; width:8px; height:8px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .15s; }
+#cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(200,184,154,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
+
+/* NAV */
+#top-nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:2rem 4rem;
+  background:linear-gradient(to bottom,rgba(10,10,10,.9),transparent);
+  backdrop-filter:blur(0px);
+  transition:background .4s,backdrop-filter .4s;
+}
+#top-nav.scrolled { background:rgba(10,10,10,.95); backdrop-filter:blur(12px); }
+.nav-back { display:flex; align-items:center; gap:.8rem; font-family:var(--font-mono); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(242,237,230,.5); text-decoration:none; transition:color .3s; }
+.nav-back:hover { color:var(--accent); }
+.nav-back-arrow { font-size:1rem; transition:transform .3s; }
+.nav-back:hover .nav-back-arrow { transform:translateX(-4px); }
+.nav-logo { font-size:1rem; font-weight:300; font-style:italic; color:var(--chalk); text-decoration:none; letter-spacing:.05em; }
+#lang-nav { display:flex; gap:1rem; }
+.lang-btn { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.15em; color:rgba(242,237,230,.35); background:none; border:none; cursor:none; text-transform:uppercase; transition:color .3s; padding:.2rem; }
+.lang-btn.active, .lang-btn:hover { color:var(--accent); }
+
+/* ── HERO ── */
+#hero {
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:0 8vw 10vh;
+  overflow:hidden;
+}
+
+.hero-bg {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(160deg,#1a2a3a,#080c10);
+  z-index:0;
+}
+
+/* Hero image — hidden until real photo added */
+.hero-img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  z-index:1;
+  display:none;
+}
+
+/* SVG placeholder drawing */
+.hero-drawing {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  opacity:.18;
+}
+
+.hero-overlay {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(10,10,10,.95) 0%, rgba(10,10,10,.4) 50%, rgba(10,10,10,.2) 100%);
+  z-index:2;
+}
+
+.hero-content { position:relative; z-index:3; }
+
+.hero-label {
+  font-family:var(--font-mono);
+  font-size:.6rem;
+  letter-spacing:.28em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation:fadeUp .9s .2s forwards;
+}
+
+.hero-title {
+  font-size:clamp(3rem,7vw,7rem);
+  font-weight:300;
+  line-height:.92;
+  letter-spacing:-.02em;
+  opacity:0;
+  animation:fadeUp .9s .35s forwards;
+}
+.hero-title em { font-style:italic; color:var(--warm); }
+
+.hero-meta {
+  display:flex;
+  gap:2.5rem;
+  margin-top:2.5rem;
+  opacity:0;
+  animation:fadeUp .9s .5s forwards;
+}
+.hero-meta-item { }
+.hero-meta-label { font-family:var(--font-mono); font-size:.52rem; letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:.3rem; }
+.hero-meta-value { font-size:.95rem; font-weight:300; color:rgba(242,237,230,.7); }
+
+/* placeholder notice */
+.img-placeholder {
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+  pointer-events:none;
+}
+.img-placeholder-box {
+  border:1px dashed rgba(200,184,154,.2);
+  padding:1.5rem 3rem;
+  text-align:center;
+}
+.img-placeholder-box span {
+  font-family:var(--font-mono);
+  font-size:.6rem;
+  letter-spacing:.2em;
+  color:rgba(200,184,154,.25);
+  text-transform:uppercase;
+  display:block;
+  line-height:1.8;
+}
+
+/* ── CONTENT ── */
+.content-wrap { max-width:1200px; margin:0 auto; padding:0 8vw; }
+
+/* intro block */
+.intro-section {
+  padding:8vw 0 6vw;
+  display:grid;
+  grid-template-columns:1fr 1.6fr;
+  gap:8vw;
+  border-bottom:1px solid rgba(200,184,154,.08);
+}
+
+.intro-left { }
+.section-label { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.28em; color:var(--accent); text-transform:uppercase; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
+.section-label::after { content:''; display:block; width:40px; height:1px; background:var(--accent); opacity:.5; }
+
+.intro-summary {
+  font-size:clamp(1.3rem,2.5vw,1.9rem);
+  font-weight:300;
+  line-height:1.45;
+  color:rgba(242,237,230,.85);
+}
+.intro-summary em { font-style:italic; color:var(--warm); }
+
+.intro-right { }
+.intro-body {
+  font-size:1rem;
+  font-weight:300;
+  line-height:1.85;
+  color:rgba(242,237,230,.6);
+  margin-bottom:1.5rem;
+}
+
+/* key facts grid */
+.facts-section {
+  padding:6vw 0;
+  border-bottom:1px solid rgba(200,184,154,.08);
+}
+.facts-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:rgba(200,184,154,.06);
+  margin-top:3rem;
+}
+.fact-item {
+  padding:2rem 1.8rem;
+  background:var(--ink);
+  transition:background .3s;
+}
+.fact-item:hover { background:#0f0f0f; }
+.fact-value {
+  font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:300;
+  color:var(--chalk);
+  line-height:1;
+  margin-bottom:.5rem;
+}
+.fact-value em { font-style:italic; color:var(--accent); }
+.fact-label {
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  letter-spacing:.18em;
+  color:rgba(242,237,230,.35);
+  text-transform:uppercase;
+  line-height:1.5;
+}
+
+/* image gallery */
+.gallery-section {
+  padding:6vw 0;
+  border-bottom:1px solid rgba(200,184,154,.08);
+}
+.gallery-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3px;
+  margin-top:3rem;
+}
+.gallery-item {
+  position:relative;
+  aspect-ratio:4/3;
+  background:#111;
+  overflow:hidden;
+  cursor:none;
+}
+.gallery-item:first-child {
+  grid-column:span 2;
+  aspect-ratio:16/9;
+}
+.gallery-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s;
+  display:none;
+}
+.gallery-item:hover .gallery-img { transform:scale(1.04); }
+
+/* Gallery placeholder */
+.gallery-ph {
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:.6rem;
+  background:linear-gradient(135deg,#111,#0d1520);
+}
+.gallery-ph-num {
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  letter-spacing:.3em;
+  color:rgba(200,184,154,.2);
+  text-transform:uppercase;
+}
+.gallery-ph-icon {
+  width:32px; height:32px;
+  border:1px solid rgba(200,184,154,.1);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* SVG drawing section */
+.drawing-section {
+  padding:6vw 0;
+  border-bottom:1px solid rgba(200,184,154,.08);
+}
+.drawing-wrap {
+  margin-top:3rem;
+  background:#0d0d0b;
+  padding:4rem;
+  position:relative;
+  overflow:hidden;
+}
+.drawing-wrap svg { width:100%; height:auto; }
+.drawing-caption {
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  letter-spacing:.18em;
+  color:rgba(200,184,154,.3);
+  text-transform:uppercase;
+  margin-top:1.5rem;
+  text-align:center;
+}
+
+/* highlights */
+.highlights-section {
+  padding:6vw 0;
+  border-bottom:1px solid rgba(200,184,154,.08);
+}
+.highlights-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:rgba(200,184,154,.06);
+  margin-top:3rem;
+}
+.highlight-item {
+  padding:2.5rem;
+  background:var(--ink);
+  transition:background .3s;
+}
+.highlight-item:hover { background:#0d0d0b; }
+.highlight-icon {
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  letter-spacing:.2em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+.highlight-icon::before { content:''; display:block; width:16px; height:1px; background:var(--accent); }
+.highlight-title {
+  font-size:1.2rem;
+  font-weight:300;
+  margin-bottom:.8rem;
+}
+.highlight-body {
+  font-size:.9rem;
+  font-weight:300;
+  line-height:1.75;
+  color:rgba(242,237,230,.55);
+}
+
+/* nav between projects */
+.project-nav {
+  padding:5vw 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.proj-nav-link {
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+  text-decoration:none;
+  color:var(--chalk);
+  transition:opacity .3s;
+  max-width:280px;
+}
+.proj-nav-link:hover { opacity:.7; }
+.proj-nav-label {
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  letter-spacing:.2em;
+  color:var(--accent);
+  text-transform:uppercase;
+}
+.proj-nav-title { font-size:1.1rem; font-weight:300; }
+.proj-nav-sep { width:1px; height:60px; background:rgba(200,184,154,.15); }
+
+/* FOOTER */
+footer { padding:2.5rem 8vw; border-top:1px solid rgba(200,184,154,.08); display:flex; justify-content:space-between; align-items:center; }
+.footer-copy { font-family:var(--font-mono); font-size:.55rem; letter-spacing:.15em; color:rgba(242,237,230,.2); text-transform:uppercase; }
+.footer-social { display:flex; gap:1.5rem; }
+.footer-social a { font-family:var(--font-mono); font-size:.55rem; letter-spacing:.15em; color:rgba(242,237,230,.25); text-decoration:none; text-transform:uppercase; transition:color .3s; }
+.footer-social a:hover { color:var(--accent); }
+
+/* LIGHTBOX */
+
+#lightbox.open { display:flex; }
+#lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; }
+#lightbox-close {
+  position:absolute; top:2rem; right:3rem;
+  font-family:var(--font-mono); font-size:.6rem; letter-spacing:.2em;
+  color:rgba(242,237,230,.4); background:none; border:none; cursor:none;
+  text-transform:uppercase; transition:color .3s;
+}
+#lightbox-close:hover { color:var(--chalk); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.reveal { animation:revealUp .8s cubic-bezier(.16,1,.3,1) both; }
+@keyframes revealUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #top-nav { padding:1.5rem 2rem; }
+  .intro-section { grid-template-columns:1fr; gap:3rem; }
+  .facts-grid { grid-template-columns:repeat(2,1fr); }
+  .gallery-grid { grid-template-columns:1fr 1fr; }
+  .gallery-item:first-child { grid-column:span 2; }
+  .highlights-grid { grid-template-columns:1fr; }
+  .project-nav { flex-direction:column; gap:2rem; }
+  .proj-nav-sep { display:none; }
+  .drawing-wrap { padding:2rem; }
+}
+
+/* ── LIGHTBOX ── */
+
+#lightbox.open { display:flex; }
+
+
+#lb-close:hover{color:#fff;}
+#lb-counter {
+  position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.18em;
+  color:rgba(255,255,255,.3);white-space:nowrap;pointer-events:none;
+}
+/* Tap-area hints — left/right arrows visible on desktop hover */
+#lightbox::before, #lightbox::after {
+  content:'';position:absolute;top:50%;
+  width:14px;height:14px;
+  border-top:2px solid rgba(255,255,255,.3);
+  border-right:2px solid rgba(255,255,255,.3);
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+#lightbox::before { left:2rem;  transform:translateY(-50%) rotate(-135deg); }
+#lightbox::after  { right:2rem; transform:translateY(-50%) rotate(45deg); }
+#lightbox:hover::before, #lightbox:hover::after { opacity:1; }
+
+
+/* touch-action:none on lightbox prevents browser scroll stealing */
+
+
+
+#lightbox {
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(5,5,5,.97);
+  display:none;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#lightbox.open { display:flex; }
+#lb-img {
+  max-width:94vw;max-height:88vh;
+  object-fit:contain;display:block;
+  user-select:none;-webkit-user-drag:none;
+  touch-action:none;
+}
+#lb-close {
+  position:absolute;top:1rem;right:1.5rem;z-index:2;
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;
+  color:rgba(255,255,255,.4);background:none;border:none;
+  cursor:pointer;text-transform:uppercase;padding:.5rem;
+}
+#lb-close:hover{color:#fff;}
+#lb-counter {
+  position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.18em;
+  color:rgba(255,255,255,.28);white-space:nowrap;pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="top-nav">
+  <a href="valon-aliti-portfolio-v2.html" class="nav-back">
+    <span class="nav-back-arrow">←</span>
+    <span data-i18n="back">Back to Portfolio</span>
+  </a>
+  <a href="valon-aliti-portfolio-v2.html" class="nav-logo">V.A.</a>
+  <div id="lang-nav">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('de')">DE</button>
+    <button class="lang-btn" onclick="setLang('al')">AL</button>
+    <button class="lang-btn" onclick="setLang('mk')">MK</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- SVG line-art placeholder (shown until real hero photo added) -->
+  <svg class="hero-drawing" viewBox="0 0 1400 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <!-- Building elevation -->
+    <rect x="100" y="350" width="1200" height="280" fill="none" stroke="#c8b89a" stroke-width="1"/>
+    <!-- Main pool hall -->
+    <rect x="200" y="280" width="700" height="70" fill="none" stroke="#c8b89a" stroke-width=".8"/>
+    <!-- Roof structure with solar panels -->
+    <line x1="200" y1="280" x2="200" y2="200" stroke="#b07d4a" stroke-width=".7"/>
+    <line x1="900" y1="280" x2="900" y2="200" stroke="#b07d4a" stroke-width=".7"/>
+    <line x1="200" y1="200" x2="900" y2="200" stroke="#b07d4a" stroke-width=".7"/>
+    <!-- Solar panel lines on roof -->
+    <line x1="240" y1="200" x2="260" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="300" y1="200" x2="320" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="360" y1="200" x2="380" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="420" y1="200" x2="440" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="480" y1="200" x2="500" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="540" y1="200" x2="560" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="600" y1="200" x2="620" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="660" y1="200" x2="680" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="720" y1="200" x2="740" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="780" y1="200" x2="800" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="840" y1="200" x2="860" y2="185" stroke="#b07d4a" stroke-width=".5"/>
+    <!-- Windows -->
+    <rect x="220" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="300" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="380" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="460" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="540" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="620" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="700" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <rect x="780" y="310" width="60" height="40" fill="rgba(58,74,92,.3)" stroke="#3a4a5c" stroke-width=".5"/>
+    <!-- Admin wing -->
+    <rect x="900" y="320" width="280" height="310" fill="none" stroke="#c8b89a" stroke-width=".8"/>
+    <rect x="920" y="340" width="50" height="50" fill="rgba(58,74,92,.2)" stroke="#3a4a5c" stroke-width=".4"/>
+    <rect x="990" y="340" width="50" height="50" fill="rgba(58,74,92,.2)" stroke="#3a4a5c" stroke-width=".4"/>
+    <rect x="1060" y="340" width="50" height="50" fill="rgba(58,74,92,.2)" stroke="#3a4a5c" stroke-width=".4"/>
+    <rect x="1130" y="340" width="30" height="50" fill="rgba(58,74,92,.2)" stroke="#3a4a5c" stroke-width=".4"/>
+    <!-- Entrance doors -->
+    <rect x="560" y="580" width="40" height="50" fill="rgba(58,74,92,.25)" stroke="#b07d4a" stroke-width=".6"/>
+    <rect x="620" y="580" width="40" height="50" fill="rgba(58,74,92,.25)" stroke="#b07d4a" stroke-width=".6"/>
+    <rect x="680" y="580" width="40" height="50" fill="rgba(58,74,92,.25)" stroke="#b07d4a" stroke-width=".6"/>
+    <!-- Ground line -->
+    <line x1="0" y1="630" x2="1400" y2="630" stroke="#c8b89a" stroke-width=".4"/>
+    <!-- Elevation markers -->
+    <line x1="70" y1="350" x2="90" y2="350" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="70" y1="280" x2="90" y2="280" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="70" y1="200" x2="90" y2="200" stroke="#b07d4a" stroke-width=".5"/>
+    <line x1="80" y1="200" x2="80" y2="630" stroke="#b07d4a" stroke-width=".3"/>
+    <!-- Pool indication in section -->
+    <rect x="200" y="420" width="580" height="120" fill="rgba(58,74,92,.08)" stroke="#3a4a5c" stroke-width=".4" stroke-dasharray="6,4"/>
+    <!-- Green roof indication -->
+    <line x1="200" y1="195" x2="900" y2="195" stroke="#4a7a5c" stroke-width="1.5" opacity=".5"/>
+  </svg>
+
+  <div class="hero-overlay"></div>
+
+  <!-- Photo placeholder notice -->
+  <div class="img-placeholder">
+    <div class="img-placeholder-box">
+      <span data-i18n="hero_ph_line1">Hero Image</span>
+      <span data-i18n="hero_ph_line2">Upload your photo to replace this placeholder</span>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-label">01 / 05 — <span data-i18n="hero_type">Öffentlicher Bau · BIM · Nachhaltigkeit</span></p>
+    <h1 class="hero-title" data-i18n="hero_title">Hallenbad<br><em>Leichlingen</em></h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label" data-i18n="meta_role">Role</div>
+        <div class="hero-meta-value" data-i18n="meta_role_val">Architect · BIM Author</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label" data-i18n="meta_office">Office</div>
+        <div class="hero-meta-value">POS4 Architekten</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label" data-i18n="meta_year">Year</div>
+        <div class="hero-meta-value">2019 – Present</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label" data-i18n="meta_loc">Location</div>
+        <div class="hero-meta-value">Leichlingen, DE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="content-wrap">
+
+  <!-- Intro -->
+  <div class="intro-section reveal">
+    <div class="intro-left">
+      <div class="section-label" data-i18n="overview_label">Overview</div>
+      <p class="intro-summary" data-i18n="intro_summary">Germany's <em>first certified</em> sustainable indoor swimming pool — a landmark in BIM-integrated public architecture.</p>
+    </div>
+    <div class="intro-right">
+      <p class="intro-body" data-i18n="intro_body1">This project is an indoor swimming hall in which I was involved in planning and implementation from Leistungsphase 1 through 5. It was a full BIM project in which model-based plans were produced. Collaboration and information exchange between architects, engineers, various specialist disciplines and the construction company was intensive and comprehensive.</p>
+      <p class="intro-body" data-i18n="intro_body2">The building stands as the first sustainability-certified indoor swimming pool in Germany, featuring a green roof and solar panels over the pool areas — a direct response to both ecological responsibility and the site's recurring flood risk, which required the structure to be elevated above the floodplain.</p>
+    </div>
+  </div>
+
+  <!-- Key Facts -->
+  <div class="facts-section reveal">
+    <div class="section-label" data-i18n="facts_label">Key Facts</div>
+    <div class="facts-grid">
+      <div class="fact-item">
+        <div class="fact-value">25<em>m</em></div>
+        <div class="fact-label" data-i18n="fact1">Competition Swimming Pool<br>Two different depths</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-value"><em>#1</em></div>
+        <div class="fact-label" data-i18n="fact2">First Certified Sustainable<br>Indoor Pool in Germany</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-value">LP<em>1–5</em></div>
+        <div class="fact-label" data-i18n="fact3">Full Project Involvement<br>Leistungsphasen 1 to 5</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-value"><em>BIM</em></div>
+        <div class="fact-label" data-i18n="fact4">Full BIM Coordination<br>IFC · BIMx Hypermodels</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="gallery-section reveal">
+    <div class="section-label" data-i18n="gallery_label">Gallery</div>
+    <div class="gallery-grid">
+      <!-- Slot 1 — large hero -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,0)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg>
+          </div>
+          <span class="gallery-ph-num" data-i18n="ph_exterior">Exterior View</span>
+        </div>
+      </div>
+      <!-- Slot 2 -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,1)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg></div>
+          <span class="gallery-ph-num" data-i18n="ph_pool">Main Pool Hall</span>
+        </div>
+      </div>
+      <!-- Slot 3 -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,2)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg></div>
+          <span class="gallery-ph-num" data-i18n="ph_render">Rendering</span>
+        </div>
+      </div>
+      <!-- Slot 4 -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,3)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg></div>
+          <span class="gallery-ph-num" data-i18n="ph_detail">Detail</span>
+        </div>
+      </div>
+      <!-- Slot 5 -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,4)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg></div>
+          <span class="gallery-ph-num" data-i18n="ph_plan">Floor Plan</span>
+        </div>
+      </div>
+      <!-- Slot 6 -->
+      <div class="gallery-item" onclick="lbOpen(IMAGES,5)">
+        <div class="gallery-ph">
+          <div class="gallery-ph-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><circle cx="7" cy="7.5" r="2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/><path d="M4 3L5 1h4l1 2" stroke="rgba(200,184,154,.3)" stroke-width=".8"/></svg></div>
+          <span class="gallery-ph-num" data-i18n="ph_section">Section</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architectural Drawing -->
+  <div class="drawing-section reveal">
+    <div class="section-label" data-i18n="drawing_label">Architectural Drawing</div>
+    <div class="drawing-wrap">
+      <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+        <!-- Floor plan schematic -->
+        <!-- Outer boundary -->
+        <rect x="60" y="60" width="1080" height="380" fill="none" stroke="#c8b89a" stroke-width=".8"/>
+        <!-- Competition pool -->
+        <rect x="100" y="100" width="580" height="240" fill="rgba(58,74,92,.12)" stroke="#3a4a5c" stroke-width=".7"/>
+        <!-- Lane lines -->
+        <line x1="100" y1="140" x2="680" y2="140" stroke="#3a4a5c" stroke-width=".3" stroke-dasharray="6,4"/>
+        <line x1="100" y1="180" x2="680" y2="180" stroke="#3a4a5c" stroke-width=".3" stroke-dasharray="6,4"/>
+        <line x1="100" y1="220" x2="680" y2="220" stroke="#3a4a5c" stroke-width=".3" stroke-dasharray="6,4"/>
+        <line x1="100" y1="260" x2="680" y2="260" stroke="#3a4a5c" stroke-width=".3" stroke-dasharray="6,4"/>
+        <line x1="100" y1="300" x2="680" y2="300" stroke="#3a4a5c" stroke-width=".3" stroke-dasharray="6,4"/>
+        <!-- Learning pool -->
+        <rect x="700" y="100" width="200" height="140" fill="rgba(58,74,92,.08)" stroke="#3a4a5c" stroke-width=".6"/>
+        <!-- Children pool -->
+        <rect x="920" y="100" width="180" height="120" fill="rgba(58,74,92,.08)" stroke="#3a4a5c" stroke-width=".6" rx="20"/>
+        <!-- Changing rooms -->
+        <rect x="100" y="360" width="580" height="70" fill="none" stroke="#c8b89a" stroke-width=".5"/>
+        <line x1="196" y1="360" x2="196" y2="430" stroke="#c8b89a" stroke-width=".3"/>
+        <line x1="292" y1="360" x2="292" y2="430" stroke="#c8b89a" stroke-width=".3"/>
+        <line x1="388" y1="360" x2="388" y2="430" stroke="#c8b89a" stroke-width=".3"/>
+        <line x1="484" y1="360" x2="484" y2="430" stroke="#c8b89a" stroke-width=".3"/>
+        <!-- Sauna / wellness -->
+        <rect x="700" y="260" width="200" height="170" fill="none" stroke="#b07d4a" stroke-width=".6"/>
+        <!-- Lifeguard room -->
+        <rect x="920" y="240" width="180" height="100" fill="none" stroke="#b07d4a" stroke-width=".7"/>
+        <!-- Admin -->
+        <rect x="920" y="360" width="180" height="70" fill="none" stroke="#c8b89a" stroke-width=".5"/>
+        <!-- Outdoor connections -->
+        <rect x="350" y="440" width="40" height="20" fill="#b07d4a" opacity=".3"/>
+        <rect x="450" y="440" width="40" height="20" fill="#b07d4a" opacity=".3"/>
+        <rect x="550" y="440" width="40" height="20" fill="#b07d4a" opacity=".3"/>
+        <!-- North arrow -->
+        <line x1="1140" y1="460" x2="1140" y2="420" stroke="#b07d4a" stroke-width=".7"/>
+        <polygon points="1140,415 1135,428 1145,428" fill="#b07d4a"/>
+        <text x="1140" y="478" font-family="'DM Mono'" font-size="8" fill="rgba(200,184,154,.5)" text-anchor="middle">N</text>
+        <!-- Scale bar -->
+        <line x1="80" y1="470" x2="180" y2="470" stroke="#c8b89a" stroke-width=".5"/>
+        <line x1="80" y1="465" x2="80" y2="475" stroke="#c8b89a" stroke-width=".5"/>
+        <line x1="130" y1="465" x2="130" y2="475" stroke="#c8b89a" stroke-width=".5"/>
+        <line x1="180" y1="465" x2="180" y2="475" stroke="#c8b89a" stroke-width=".5"/>
+        <text x="130" y="488" font-family="'DM Mono'" font-size="7" fill="rgba(200,184,154,.4)" text-anchor="middle">0    5    10m</text>
+        <!-- Labels -->
+        <text x="390" y="228" font-family="'DM Mono'" font-size="8" fill="rgba(58,74,92,.8)" text-anchor="middle">25m POOL</text>
+        <text x="800" y="175" font-family="'DM Mono'" font-size="7" fill="rgba(58,74,92,.6)" text-anchor="middle">LEARNING</text>
+        <text x="1010" y="163" font-family="'DM Mono'" font-size="7" fill="rgba(58,74,92,.6)" text-anchor="middle">CHILDREN</text>
+        <text x="800" y="348" font-family="'DM Mono'" font-size="7" fill="rgba(176,125,74,.6)" text-anchor="middle">SAUNA</text>
+        <text x="1010" y="293" font-family="'DM Mono'" font-size="7" fill="rgba(176,125,74,.6)" text-anchor="middle">LIFEGUARD</text>
+      </svg>
+      <p class="drawing-caption" data-i18n="drawing_caption">Ground Floor Plan — Schematic · Hallenbad Leichlingen · ©POS4 Architekten</p>
+    </div>
+  </div>
+
+  <!-- Highlights -->
+  <div class="highlights-section reveal">
+    <div class="section-label" data-i18n="highlights_label">Project Highlights</div>
+    <div class="highlights-grid">
+      <div class="highlight-item">
+        <div class="highlight-icon" data-i18n="h1_tag">Sustainability</div>
+        <h4 class="highlight-title" data-i18n="h1_title">First Certified Sustainable Pool in Germany</h4>
+        <p class="highlight-body" data-i18n="h1_body">Green roof and solar panels integrated over the pool areas. The project set a national precedent for ecological certification in public aquatic facilities.</p>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon" data-i18n="h2_tag">BIM</div>
+        <h4 class="highlight-title" data-i18n="h2_title">Full BIM Coordination</h4>
+        <p class="highlight-body" data-i18n="h2_body">Model-based plans, visual model reviews, BIMx hypermodels, and Twinmotion visualisations. IFC-based quantity take-offs and cost estimation with NOVA AVA.</p>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon" data-i18n="h3_tag">Holzbau</div>
+        <h4 class="highlight-title" data-i18n="h3_title">Timber Construction Detailing</h4>
+        <p class="highlight-body" data-i18n="h3_body">Full development of timber construction details for the sports and pool areas, including concrete base connections and execution-level detail drawings.</p>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon" data-i18n="h4_tag">Flood Protection</div>
+        <h4 class="highlight-title" data-i18n="h4_title">Elevated Construction</h4>
+        <p class="highlight-body" data-i18n="h4_body">The building was raised above the floodplain level — a direct response to the district's recurring flood risk. Infrastructure resilience woven into the design from the outset.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Navigation -->
+  <div class="project-nav reveal">
+    <div></div>
+    <div class="proj-nav-sep"></div>
+    <a href="project-airport.html" class="proj-nav-link" style="text-align:right">
+      <span class="proj-nav-label" data-i18n="next_label">Next Project →</span>
+      <span class="proj-nav-title" data-i18n="next_title">Airport on Military Site</span>
+    </a>
+  </div>
+
+</div><!-- /content-wrap -->
+
+<footer>
+  <span class="footer-copy">© 2025 Valon Aliti · Architect · Düsseldorf</span>
+  <div class="footer-social">
+    <a href="https://www.linkedin.com/in/valonaliti" target="_blank">LinkedIn</a>
+    <a href="https://instagram.com/avarchitect" target="_blank">Instagram</a>
+    <a href="mailto:info@avarch.de">info@avarch.de</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function animC(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);})();
+document.querySelectorAll('a,button,.gallery-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(176,125,74,.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(200,184,154,.4)';});
+});
+
+// NAV scroll effect
+window.addEventListener('scroll',()=>{
+  document.getElementById('top-nav').classList.toggle('scrolled',window.scrollY>80);
+});
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(e=>e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+
+// LANGUAGE SYSTEM
+const T={
+  en:{
+    back:'Back to Portfolio',
+    hero_type:'Public Building · BIM · Sustainability',
+    hero_title:'Hallenbad<br><em>Leichlingen</em>',
+    meta_role:'Role',meta_role_val:'Architect · BIM Author',meta_office:'Office',meta_year:'Year',meta_loc:'Location',
+    hero_ph_line1:'Hero Image',hero_ph_line2:'Upload your photo to replace this placeholder',
+    overview_label:'Overview',
+    intro_summary:'Germany\'s <em>first certified</em> sustainable indoor swimming pool — a landmark in BIM-integrated public architecture.',
+    intro_body1:'This project is an indoor swimming hall in which I was involved in planning and implementation from Leistungsphase 1 through 5. It was a full BIM project in which model-based plans were produced. Collaboration between architects, engineers, specialist disciplines and the construction company was intensive and comprehensive.',
+    intro_body2:'The building stands as the first sustainability-certified indoor swimming pool in Germany, featuring a green roof and solar panels over the pool areas — a direct response to both ecological responsibility and the site\'s recurring flood risk, which required the structure to be elevated above the floodplain.',
+    facts_label:'Key Facts',
+    fact1:'Competition Swimming Pool\nTwo different depths',fact2:'First Certified Sustainable\nIndoor Pool in Germany',fact3:'Full Project Involvement\nLeistungsphasen 1 to 5',fact4:'Full BIM Coordination\nIFC · BIMx Hypermodels',
+    gallery_label:'Gallery',
+    ph_exterior:'Exterior View',ph_pool:'Main Pool Hall',ph_render:'Rendering',ph_detail:'Detail',ph_plan:'Floor Plan',ph_section:'Section',
+    drawing_label:'Architectural Drawing',
+    drawing_caption:'Ground Floor Plan — Schematic · Hallenbad Leichlingen · ©POS4 Architekten',
+    highlights_label:'Project Highlights',
+    h1_tag:'Sustainability',h1_title:'First Certified Sustainable Pool in Germany',h1_body:'Green roof and solar panels integrated over the pool areas. The project set a national precedent for ecological certification in public aquatic facilities.',
+    h2_tag:'BIM',h2_title:'Full BIM Coordination',h2_body:'Model-based plans, visual model reviews, BIMx hypermodels, and Twinmotion visualisations. IFC-based quantity take-offs and cost estimation with NOVA AVA.',
+    h3_tag:'Timber Construction',h3_title:'Timber Construction Detailing',h3_body:'Full development of timber construction details for the sports and pool areas, including concrete base connections and execution-level detail drawings.',
+    h4_tag:'Flood Protection',h4_title:'Elevated Construction',h4_body:'The building was raised above the floodplain level — a direct response to the district\'s recurring flood risk. Infrastructure resilience woven into the design from the outset.',
+    next_label:'Next Project →',next_title:'Airport on Military Site',
+  },
+  de:{
+    back:'Zurück zum Portfolio',
+    hero_type:'Öffentlicher Bau · BIM · Nachhaltigkeit',
+    hero_title:'Hallenbad<br><em>Leichlingen</em>',
+    meta_role:'Rolle',meta_role_val:'Architekt · BIM-Autor',meta_office:'Büro',meta_year:'Jahr',meta_loc:'Ort',
+    hero_ph_line1:'Hauptbild',hero_ph_line2:'Foto hochladen, um Platzhalter zu ersetzen',
+    overview_label:'Überblick',
+    intro_summary:'Deutschlands <em>erstes zertifiziertes</em> nachhaltiges Hallenbad — ein Meilenstein in der BIM-integrierten Öffentlichkeitsarchitektur.',
+    intro_body1:'Dieses Projekt ist eine Schwimmhalle, an deren Planung und Umsetzung ich von Leistungsphase 1 bis 5 beteiligt war. Es war ein vollständiges BIM-Projekt, bei dem modellbasierte Pläne erstellt wurden.',
+    intro_body2:'Das Gebäude ist das erste nachhaltig zertifizierte Hallenbad in Deutschland, mit begrüntem Dach und Solarpaneelen über den Beckenbereichen — eine Reaktion auf ökologische Verantwortung und das lokale Hochwasserrisiko.',
+    facts_label:'Eckdaten',
+    fact1:'Wettkampf-Schwimmbecken\nZwei verschiedene Tiefen',fact2:'Erstes zertifiziertes\nnachhaltiges Hallenbad',fact3:'Vollständige Projektbeteiligung\nLeistungsphasen 1 bis 5',fact4:'BIM-Koordination\nIFC · BIMx-Hypermodelle',
+    gallery_label:'Galerie',
+    ph_exterior:'Außenansicht',ph_pool:'Hauptschwimmhalle',ph_render:'Visualisierung',ph_detail:'Detail',ph_plan:'Grundriss',ph_section:'Schnitt',
+    drawing_label:'Architekturzeichnung',
+    drawing_caption:'Grundriss Erdgeschoss — Schematisch · Hallenbad Leichlingen · ©POS4 Architekten',
+    highlights_label:'Projekthighlights',
+    h1_tag:'Nachhaltigkeit',h1_title:'Erstes zertifiziertes nachhaltiges Hallenbad Deutschlands',h1_body:'Begrüntes Dach und Solarpaneele über den Beckenbereichen. Das Projekt setzte einen nationalen Maßstab für ökologische Zertifizierung öffentlicher Bäder.',
+    h2_tag:'BIM',h2_title:'Vollständige BIM-Koordination',h2_body:'Modellbasierte Pläne, visuelle Modellprüfungen, BIMx-Hypermodelle und Twinmotion-Visualisierungen. IFC-basierte Mengenermittlung und Kostenschätzung mit NOVA AVA.',
+    h3_tag:'Holzbau',h3_title:'Holzbaudetaillierung',h3_body:'Vollständige Entwicklung von Holzbaudetails für Sport- und Schwimmbadbereich, einschließlich Beton-Sockelanschlüsse und Ausführungsdetails.',
+    h4_tag:'Hochwasserschutz',h4_title:'Erhöhte Bauweise',h4_body:'Das Gebäude wurde über dem Hochwasserniveau errichtet — als direkte Antwort auf das häufig auftretende Hochwasser im Stadtteil.',
+    next_label:'Nächstes Projekt →',next_title:'Flughafen auf Militärgelände',
+  },
+  al:{
+    back:'Kthehu tek Portfolioja',
+    hero_type:'Ndërtesë Publike · BIM · Qëndrueshmëri',
+    hero_title:'Pishinë e mbyllur<br><em>Leichlingen</em>',
+    meta_role:'Roli',meta_role_val:'Arkitekt · Autor BIM',meta_office:'Zyra',meta_year:'Viti',meta_loc:'Vendndodhja',
+    hero_ph_line1:'Imazhi Kryesor',hero_ph_line2:'Ngarko foton tënde për të zëvendësuar këtë vend',
+    overview_label:'Pasqyrë',
+    intro_summary:'Pishinë e parë e mbyllur e certifikuar si e qëndrueshme në Gjermani — <em>monument</em> i arkitekturës publike të integruar me BIM.',
+    intro_body1:'Ky projekt është një pishinë e mbyllur ku isha i përfshirë në planifikim dhe zbatim nga Faza 1 deri në 5. Ishte projekt i plotë BIM me plane bazuar në model.',
+    intro_body2:'Ndërtesa qëndron si pishinë e parë e certifikuar si e qëndrueshme në Gjermani, me çati të gjelbër dhe panele diellore — përgjigje ndaj përgjegjësisë ekologjike dhe rrezikut të vërshimeve.',
+    facts_label:'Të dhëna kryesore',
+    fact1:'Pishinë Gare 25m\nDy thellësi të ndryshme',fact2:'E para e certifikuar\ne qëndrueshme në Gjermani',fact3:'Përfshirje e plotë\nFazat 1 deri 5',fact4:'Koordinim i plotë BIM\nIFC · BIMx Hipermodele',
+    gallery_label:'Galeria',
+    ph_exterior:'Pamja e jashtme',ph_pool:'Salla kryesore e pishinës',ph_render:'Vizualizim',ph_detail:'Detaj',ph_plan:'Planimetri',ph_section:'Prerje',
+    drawing_label:'Vizatim Arkitektonik',
+    drawing_caption:'Planimetri Kati Përdhes — Skematike · Pishinë Leichlingen · ©POS4 Architekten',
+    highlights_label:'Pikat Kryesore',
+    h1_tag:'Qëndrueshmëri',h1_title:'Pishinë e parë e certifikuar e qëndrueshme në Gjermani',h1_body:'Çati e gjelbër dhe panele diellore mbi zonat e pishinës. Projekti vendosi një precedent kombëtar për certifikimin ekologjik.',
+    h2_tag:'BIM',h2_title:'Koordinim i plotë BIM',h2_body:'Planet bazuar në model, rishikime vizuale, hipermodele BIMx dhe vizualizime Twinmotion. Llogaritje sasish bazuar në IFC dhe vlerësim kostosh me NOVA AVA.',
+    h3_tag:'Ndërtim druri',h3_title:'Detajim i ndërtimit me dru',h3_body:'Zhvillim i plotë i detajeve të ndërtimit me dru për zonat sportive dhe të pishinës, duke përfshirë lidhjet me bazën prej betoni.',
+    h4_tag:'Mbrojtje nga vërshinat',h4_title:'Ndërtim i ngritur',h4_body:'Ndërtesa u ngrit mbi nivelin e vërshimit — përgjigje e drejtpërdrejtë ndaj rrezikut të shpeshtë të vërshimeve në lagje.',
+    next_label:'Projekti tjetër →',next_title:'Aeroport në Fushë Ushtarake',
+  },
+  mk:{
+    back:'Назад кон Портфолио',
+    hero_type:'Јавна Зграда · BIM · Одржливост',
+    hero_title:'Затворен Базен<br><em>Лајхлинген</em>',
+    meta_role:'Улога',meta_role_val:'Архитект · BIM Автор',meta_office:'Канцеларија',meta_year:'Година',meta_loc:'Локација',
+    hero_ph_line1:'Главна Слика',hero_ph_line2:'Прикачи фотографија за да го замениш плейсхолдерот',
+    overview_label:'Преглед',
+    intro_summary:'Прв сертифициран одржлив затворен базен во Германија — <em>белег</em> на BIM-интегрирана јавна архитектура.',
+    intro_body1:'Овој проект е затворена пливачка хала во чие планирање и реализација учествував од Фаза 1 до 5. Беше целосен BIM проект со планови базирани на модел.',
+    intro_body2:'Зградата е прв сертифициран одржлив затворен базен во Германија, со зелен покрив и соларни панели — одговор на еколошката одговорност и ризикот од поплави.',
+    facts_label:'Клучни факти',
+    fact1:'Такмичарски базен 25m\nДве различни длабочини',fact2:'Прв сертифициран\nodржлив базен во Германија',fact3:'Целосна вклученост\nФази 1 до 5',fact4:'Целосна BIM координација\nIFC · BIMx хипермодели',
+    gallery_label:'Галерија',
+    ph_exterior:'Надворешен изглед',ph_pool:'Главна пливачка хала',ph_render:'Визуелизација',ph_detail:'Детаљ',ph_plan:'Основа',ph_section:'Пресек',
+    drawing_label:'Архитектонски Цртеж',
+    drawing_caption:'Основа Приземје — Шематски · Затворен Базен Лајхлинген · ©POS4 Architekten',
+    highlights_label:'Проектни Достигнувања',
+    h1_tag:'Одржливост',h1_title:'Прв сертифициран одржлив базен во Германија',h1_body:'Зелен покрив и соларни панели над базените. Проектот постави национален преседан за еколошка сертификација на јавни базени.',
+    h2_tag:'BIM',h2_title:'Целосна BIM координација',h2_body:'Планови базирани на модел, визуелни прегледи, BIMx хипермодели и Twinmotion визуелизации. Пресметка на количини од IFC и проценка на трошоци со NOVA AVA.',
+    h3_tag:'Дрвена конструкција',h3_title:'Детализација на дрвена конструкција',h3_body:'Целосен развој на детали за дрвена конструкција за спортски и базенски области, вклучувајќи бетонски конзолни приклучоци.',
+    h4_tag:'Заштита од поплави',h4_title:'Издигната конструкција',h4_body:'Зградата е издигната над нивото на поплава — директен одговор на честите поплави во четвртот.',
+    next_label:'Следен проект →',next_title:'Аеродром на Воено Земјиште',
+  }
+};
+
+function setLang(l){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  const t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(!t[k]) return;
+    // elements that may contain HTML
+    if(['hero_title','intro_summary'].includes(k)) el.innerHTML=t[k];
+    else el.textContent=t[k];
+  });
+}
+</script>
+</div>
+
+
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close" onclick="lbClose()">✕ Close</button>
+</div>
+
+<script>
+var IMAGES = [
+  {src:'hallenbad-01.jpg', cap:'Exterior View'},
+  {src:'hallenbad-02.jpg', cap:'Main Pool Hall'},
+  {src:'hallenbad-03.jpg', cap:'Rendering'},
+  {src:'hallenbad-04.jpg', cap:'Detail'},
+  {src:'hallenbad-05.jpg', cap:'Floor Plan'},
+  {src:'hallenbad-06.jpg', cap:'Section'},
+];
+</script>
+<script>
+// ── LIGHTBOX + SWIPE (proven pattern) ──
+var LB_IMGS=[], LB_IDX=0;
+
+function lbOpen(imgs,idx){
+  LB_IMGS=imgs; LB_IDX=idx;
+  lbUpdate();
+  document.getElementById('lightbox').classList.add('open');
+  // Lock body scroll completely
+  document.body.style.position='fixed';
+  document.body.style.overflow='hidden';
+  document.body.style.width='100%';
+}
+function lbClose(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.position='';
+  document.body.style.overflow='';
+  document.body.style.width='';
+}
+function lbNav(dir){
+  LB_IDX=(LB_IDX+dir+LB_IMGS.length)%LB_IMGS.length;
+  lbUpdate();
+}
+function lbUpdate(){
+  var item=LB_IMGS[LB_IDX];
+  document.getElementById('lb-img').src=item.src;
+  document.getElementById('lb-img').alt=item.cap||'';
+  document.getElementById('lb-counter').textContent=
+    (LB_IDX+1)+' / '+LB_IMGS.length+(item.cap?'  —  '+item.cap:'');
+}
+
+// Swipe on lightbox — same as proven test page
+var _sx=0,_sy=0,_st=0;
+var _lb=document.getElementById('lightbox');
+
+_lb.addEventListener('touchstart',function(e){
+  _sx=e.touches[0].clientX;
+  _sy=e.touches[0].clientY;
+  _st=Date.now();
+  e.preventDefault();
+},{passive:false});
+
+_lb.addEventListener('touchmove',function(e){
+  e.preventDefault();
+},{passive:false});
+
+_lb.addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-_sx;
+  var dy=e.changedTouches[0].clientY-_sy;
+  var dt=Date.now()-_st;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>30&&dt<500){
+    lbNav(dx<0?1:-1);
+  }
+  e.preventDefault();
+},{passive:false});
+
+// Desktop: click left half=prev, right half=next
+_lb.addEventListener('click',function(e){
+  if(e.target===document.getElementById('lb-close'))return;
+  if(e.clientX<_lb.clientWidth/2) lbNav(-1);
+  else lbNav(1);
+});
+
+// Keyboard
+document.addEventListener('keydown',function(e){
+  if(!_lb.classList.contains('open'))return;
+  if(e.key==='Escape')    lbClose();
+  if(e.key==='ArrowLeft') lbNav(-1);
+  if(e.key==='ArrowRight')lbNav(1);
+});
+</script>
+</body>
+</html>
